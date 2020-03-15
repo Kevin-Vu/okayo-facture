@@ -19,7 +19,7 @@ mvn spring-boot:run
 Once the app is running go to `http://localhost:8080/swagger-ui.html`
 
 ## Database 
-<img src="diagram.png" width="250">
+<img src="diagram.png" width="750">
 
 ## Next development 
 - Connect the a real database (actually it's a H2 in memory)
