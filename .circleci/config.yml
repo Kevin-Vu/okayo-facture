@@ -1,6 +1,7 @@
 version: 2 
 jobs: 
   build: 
+    working_directory: ~/okayo-facture
     docker:
       - image: circleci/openjdk:8-jdk-stretch 
     steps:
