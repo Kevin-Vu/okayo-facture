@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 # Okayo-facture
 
-Manage your client and their invoices.
+Manage your clients and their invoices.
 
 ## Compile and run test
 ```sh
