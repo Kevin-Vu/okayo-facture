@@ -1,6 +1,7 @@
 package com.okayo.facture.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.okayo.facture.configuration.BaseTest;
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.entity.ClientEntity;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestPropertySource(locations = {"classpath:test.properties"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class TestClientController {
+public class TestClientController extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;

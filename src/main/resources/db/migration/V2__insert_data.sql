@@ -1,3 +1,5 @@
+-- INSERT DATA
+
 INSERT INTO client(id,name,code_client,adresse,code_postal)
 values
 (1, 'Société Général', 'CU-018924-SG', '29 BD Haussmann', 75009),
@@ -40,4 +42,3 @@ values
 ;
 
 ALTER sequence designation_sequence restart WITH 6;
-
