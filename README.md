@@ -5,14 +5,21 @@
 
 Manage your clients and their invoices.
 
+## Prerequisite
+```
+$ docker pull postgres:11
+$ docker run --name okayo-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres:11
+$ docker exec okayo-postgres psql -U postgres -c"CREATE DATABASE OKAYO" postgres
+```
+
 ## Compile and run test
 ```sh
-mvn -U clean install
+$ mvn -U clean install
 ```
 
 ## Run the application
 ```sh
-mvn spring-boot:run
+$ mvn spring-boot:run
 ```
 
 ## Access to api documentation
