@@ -5,7 +5,6 @@ import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.entity.AuthorityEntity;
 import com.okayo.facture.entity.ClientEntity;
 import com.okayo.facture.repository.AuthorityRepository;
-import com.okayo.facture.service.ClientService;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
