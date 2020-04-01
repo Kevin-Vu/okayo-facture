@@ -22,7 +22,6 @@ Once the app is running go to `http://localhost:8080/swagger-ui.html`
 <img src="diagram.png" width="750">
 
 ## Next development
-- Connect the a real database (actually it's a H2 in memory)
+- Implements HTTPS
 - Add more api : CRUD for designation etc
-- Implement an authentication in order to access the content
 - Develop a front-end
