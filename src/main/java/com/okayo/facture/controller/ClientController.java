@@ -60,6 +60,22 @@ public class ClientController {
     }
 
     /**
+     * Get current client
+     * @param user : CurrentUser
+     * @return : ClientDto
+     * @throws ClientNotFoundException
+     * @throws ClientBadRequestException
+     */
+    @ApiOperation(value = "Récupère le client courant")
+    @GetMapping(value = "/api/auth/client/current")
+    public ResponseEntity<ClientDto> getCurrentClient(CurrentUser user) throws ClientNotFoundException {
+        ClientEntity clientEntity = clientService.loadClientById(user.getId());
+        ClientDto clientDto = clientMapper.convert(clientEntity);
+        return new ResponseEntity<>(clientDto, HttpStatus.OK);
+    }
+
+
+    /**
      * Update a client
      * @param clientDto : ClientDto
      * @return : Response status
