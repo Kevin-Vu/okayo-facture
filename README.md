@@ -28,6 +28,5 @@ Once the app is running go to `http://localhost:8080/swagger-ui.html`
 ## Database 
 <img src="diagram.png" width="750">
 
-## Next development
-- Implements HTTPS
-- Develop a front-end
+## Front-End
+Front Available [here](https://github.com/Kevin-Vu/circe-spring-boot)
