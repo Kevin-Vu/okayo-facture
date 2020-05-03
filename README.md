@@ -29,4 +29,4 @@ Once the app is running go to `http://localhost:8080/swagger-ui.html`
 <img src="diagram.png" width="750">
 
 ## Front-End
-Front Available [here](https://github.com/Kevin-Vu/circe-spring-boot)
+Front Available [here](https://github.com/Kevin-Vu/circe-angular)
