@@ -6,5 +6,5 @@ orbs:
 workflows:
   maven_test:
     jobs:
-      - docker ls
+      - command : apt-get update
       - maven/test
