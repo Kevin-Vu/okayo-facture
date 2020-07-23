@@ -7,11 +7,15 @@ workflows:
   maven_test:
     jobs:
       build:
-      working_directory: /app
-      docker:
-        - image: docker:17.05.0-ce-git
-      steps:
-        - checkout
-        - setup_remote_docker
-        - run :
-            command: mvn clean install
+        steps:
+          - run :
+              - name : Test Docker
+              - command : docker ls
+#       working_directory: /app
+#       docker:
+#         - image: docker:17.05.0-ce-git
+#       steps:
+#         - checkout
+#         - setup_remote_docker
+#         - run :
+#             command: mvn clean install
