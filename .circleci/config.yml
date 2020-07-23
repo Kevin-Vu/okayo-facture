@@ -8,9 +8,9 @@ workflows:
     jobs:
       build:
         steps:
-          - run :
-              - name : Test Docker
-              - command : docker ls
+          run :
+            - name : Test Docker
+            - command : docker ls
 #       working_directory: /app
 #       docker:
 #         - image: docker:17.05.0-ce-git
