@@ -1,11 +1,11 @@
-version: 2.1
-
-orbs:
+orbs: 
   maven: circleci/maven@0.0.12
-
-workflows:
-  maven_test:
-    jobs:
-      - run:
-        - command : apt-get update
+version: 2.1
+workflows: 
+  maven_test: 
+    jobs: 
+      - 
+        run: 
+          - 
+            command: "apt-get update"
       - maven/test
