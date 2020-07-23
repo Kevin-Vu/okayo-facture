@@ -3,14 +3,18 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
+jobs:
+  build:
+    steps:
+      - run: docker ls
+  test:
+    steps:
+      - run : mvn clean install
+
 workflows:
   maven_test:
     jobs:
-      build:
-        steps:
-          run :
-            - name : Test Docker
-            - command : docker ls
+      - build
 #       working_directory: /app
 #       docker:
 #         - image: docker:17.05.0-ce-git
