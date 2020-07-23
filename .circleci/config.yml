@@ -6,5 +6,6 @@ orbs:
 workflows:
   maven_test:
     jobs:
-      - command : apt-get update
+      - run:
+        - command : apt-get update
       - maven/test
