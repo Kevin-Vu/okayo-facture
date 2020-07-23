@@ -7,20 +7,11 @@ workflows:
   maven_test:
     jobs:
       build:
-        steps:
-          - run :
-              name: Install Docker
-              command: |
-                apt-get update --fix-missing
-                apt-get install -y apt-transport-https ca-certificates software-properties-common
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-                apt-key fingerprint 0EBFCD88
-                add-apt-repository \
-                  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-                  $(lsb_release -cs) \
-                  stable"
-                apt-get update
-                apt-get install -y docker-ce
-                docker --version
-          - run :
+      working_directory: /app
+      docker:
+        - image: docker:17.05.0-ce-git
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run :
             - maven/test:
