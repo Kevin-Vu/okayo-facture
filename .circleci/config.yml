@@ -24,4 +24,4 @@ workflows:
                 docker --version
            -run :
               name: Maven Test
-              - maven/test # checkout, build, test, and upload test results
+              - maven/test # checkout, build, test, and upload test results  
