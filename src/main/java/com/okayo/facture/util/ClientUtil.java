@@ -2,7 +2,7 @@ package com.okayo.facture.util;
 
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
-import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
 import com.okayo.facture.security.CurrentUser;
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,11 +56,11 @@ public class ClientUtil {
     /**
      * Check if the user belongs to the company
      * @param user : CurrentUser
-     * @param clientEntity : ClientEntity
+     * @param userEntity : ClientEntity
      * @return : boolean
      */
-    public static boolean checkUserBelongsToCompany(CurrentUser user, ClientEntity clientEntity){
-        return StringUtils.compare(user.getCompanyName(), clientEntity.getCompanyEntity().getName()) == 0;
+    public static boolean checkUserBelongsToCompany(CurrentUser user, UserEntity userEntity){
+        return StringUtils.compare(user.getCompanyName(), userEntity.getCompanyEntity().getName()) == 0;
     }
 
     /**

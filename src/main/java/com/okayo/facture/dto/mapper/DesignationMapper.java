@@ -1,7 +1,7 @@
 package com.okayo.facture.dto.mapper;
 
 import com.okayo.facture.dto.designation.CreateDesignationDto;
-import com.okayo.facture.entity.DesignationEntity;
+import com.okayo.facture.entity.data.DesignationEntity;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;

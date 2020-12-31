@@ -5,9 +5,9 @@ import com.okayo.facture.dto.designation.CreateDesignationDto;
 import com.okayo.facture.dto.invoice.InvoiceDto;
 import com.okayo.facture.dto.mapper.DesignationMapper;
 import com.okayo.facture.dto.mapper.InvoiceMapper;
-import com.okayo.facture.entity.ClientEntity;
-import com.okayo.facture.entity.DesignationEntity;
-import com.okayo.facture.entity.InvoiceEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
+import com.okayo.facture.entity.data.DesignationEntity;
+import com.okayo.facture.entity.data.InvoiceEntity;
 import com.okayo.facture.repository.InvoiceRepository;
 import com.okayo.facture.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     @Transactional
-    public InvoiceEntity createFacture(List<CreateDesignationDto> createDesignationDtoList, ClientEntity clientEntity){
+    public InvoiceEntity createFacture(List<CreateDesignationDto> createDesignationDtoList, UserEntity userEntity){
 
         // Convert
         List<DesignationEntity> designationEntityList = designationMapper.convertListCreateDto(createDesignationDtoList);
@@ -65,7 +65,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         // Create the facture entity
-        InvoiceEntity invoiceEntity = new InvoiceEntity().setClient(clientEntity)
+        InvoiceEntity invoiceEntity = new InvoiceEntity().setClient(userEntity)
                                                         .setInvoiceDate(Timestamp.valueOf(LocalDateTime.now()))
                                                         .setTotalNoTaxes(tth)
                                                         .setTotalWithTaxes(ttc)
@@ -78,12 +78,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     /**
      * Get the facture (invoice) dto for a given client
-     * @param clientEntity : ClientEntity
+     * @param userEntity : ClientEntity
      * @return : list of FactureDto
      */
     @Override
-    public List<InvoiceDto> getAllFactureForClient(ClientEntity clientEntity){
-        List<InvoiceEntity> invoiceEntityList = invoiceRepository.findAllByClient(clientEntity);
+    public List<InvoiceDto> getAllFactureForClient(UserEntity userEntity){
+        List<InvoiceEntity> invoiceEntityList = invoiceRepository.findAllByClient(userEntity);
         return invoiceMapper.convertListInvoiceEntity(invoiceEntityList);
     }
 

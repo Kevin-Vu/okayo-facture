@@ -1,4 +1,4 @@
-package com.okayo.facture.entity;
+package com.okayo.facture.entity.data;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "company")
+@Table(name = "d_company")
 @Data
 @Accessors(chain = true)
 public class CompanyEntity {

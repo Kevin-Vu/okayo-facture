@@ -1,7 +1,7 @@
 package com.okayo.facture.dto.mapper;
 
 import com.okayo.facture.dto.designation.DesignationCatalogDto;
-import com.okayo.facture.entity.DesignationCatalogEntity;
+import com.okayo.facture.entity.referentiel.DesignationCatalogEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

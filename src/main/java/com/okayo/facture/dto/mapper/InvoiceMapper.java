@@ -1,7 +1,7 @@
 package com.okayo.facture.dto.mapper;
 
 import com.okayo.facture.dto.invoice.InvoiceDto;
-import com.okayo.facture.entity.InvoiceEntity;
+import com.okayo.facture.entity.data.InvoiceEntity;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;

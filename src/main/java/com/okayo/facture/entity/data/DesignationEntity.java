@@ -1,4 +1,4 @@
-package com.okayo.facture.entity;
+package com.okayo.facture.entity.data;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

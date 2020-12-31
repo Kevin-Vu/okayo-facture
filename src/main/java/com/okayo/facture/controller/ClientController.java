@@ -3,7 +3,7 @@ package com.okayo.facture.controller;
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.dto.mapper.ClientMapper;
-import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
 import com.okayo.facture.exception.badrequest.ClientBadRequestException;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
 import com.okayo.facture.security.CurrentUser;
@@ -51,11 +51,11 @@ public class ClientController {
     @ApiOperation(value = "Récupère un client par son code client")
     @GetMapping(value = "/api/auth/client")
     public ResponseEntity<ClientDto> getClientByCodeClient(CurrentUser user, @RequestParam String clientCode) throws ClientNotFoundException, ClientBadRequestException {
-        ClientEntity clientEntity = clientService.loadClientByCodeClient(clientCode);
-        if(!ClientUtil.checkUserBelongsToCompany(user, clientEntity)){
+        UserEntity userEntity = clientService.loadClientByCodeClient(clientCode);
+        if(!ClientUtil.checkUserBelongsToCompany(user, userEntity)){
             throw new ClientBadRequestException("Impossible de récupérer un client d'une autre entreprise");
         }
-        ClientDto clientDto = clientMapper.convert(clientEntity);
+        ClientDto clientDto = clientMapper.convert(userEntity);
         return new ResponseEntity<>(clientDto, HttpStatus.OK);
     }
 
@@ -69,8 +69,8 @@ public class ClientController {
     @ApiOperation(value = "Récupère le client courant")
     @GetMapping(value = "/api/auth/client/current")
     public ResponseEntity<ClientDto> getCurrentClient(CurrentUser user) throws ClientNotFoundException {
-        ClientEntity clientEntity = clientService.loadClientById(user.getId());
-        ClientDto clientDto = clientMapper.convert(clientEntity);
+        UserEntity userEntity = clientService.loadClientById(user.getId());
+        ClientDto clientDto = clientMapper.convert(userEntity);
         return new ResponseEntity<>(clientDto, HttpStatus.OK);
     }
 

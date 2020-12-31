@@ -1,5 +1,6 @@
-package com.okayo.facture.entity;
+package com.okayo.facture.entity.data;
 
+import com.okayo.facture.entity.referentiel.UserEntity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -38,7 +39,7 @@ public class InvoiceEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_id_client")
-    private ClientEntity client;
+    private UserEntity client;
 
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<DesignationEntity> designations = new ArrayList<>();

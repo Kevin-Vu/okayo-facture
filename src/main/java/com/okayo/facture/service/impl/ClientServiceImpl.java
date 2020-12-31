@@ -4,8 +4,8 @@ import com.google.common.base.Enums;
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.dto.mapper.ClientMapper;
-import com.okayo.facture.entity.AuthorityEntity;
-import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.entity.referentiel.AuthorityEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
 import com.okayo.facture.enumeration.OkayoAuthorityEnum;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
 import com.okayo.facture.repository.AuthorityRepository;
@@ -53,14 +53,14 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public UserDetails loadUserByUsername(String codeClient){
-        ClientEntity clientEntity;
+        UserEntity userEntity;
         try{
-            clientEntity = this.loadClientByCodeClient(codeClient);
+            userEntity = this.loadClientByCodeClient(codeClient);
         }catch (ClientNotFoundException e){
             throw new UsernameNotFoundException("Le code client n'existe pas : " + codeClient);
         }
 
-        OkayoAuthorityEnum okayoAuthorityEnum = Enums.getIfPresent(OkayoAuthorityEnum.class, clientEntity.getAuthorityEntity().getName()).orNull();
+        OkayoAuthorityEnum okayoAuthorityEnum = Enums.getIfPresent(OkayoAuthorityEnum.class, userEntity.getAuthorityEntity().getName()).orNull();
         if(okayoAuthorityEnum == null){
             throw new UsernameNotFoundException("User has no role");
         }
@@ -68,7 +68,7 @@ public class ClientServiceImpl implements ClientService {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(okayoAuthorityEnum.getValue());
 
         List<GrantedAuthority> authorities = Collections.singletonList(grantedAuthority);
-        return new CurrentUser(clientEntity.getClientCode(), clientEntity.getPassword(), authorities, clientEntity.getId(), clientEntity.getCompanyEntity().getName());
+        return new CurrentUser(userEntity.getClientCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getCompanyEntity().getName());
     }
 
     /**
@@ -78,8 +78,8 @@ public class ClientServiceImpl implements ClientService {
      * @throws ClientNotFoundException
      */
     @Override
-    public ClientEntity loadClientByCodeClient(String clientCode) throws ClientNotFoundException {
-        Optional<ClientEntity> clientEntity = clientRepository.findByClientCode(clientCode);
+    public UserEntity loadClientByCodeClient(String clientCode) throws ClientNotFoundException {
+        Optional<UserEntity> clientEntity = clientRepository.findByClientCode(clientCode);
         if(!clientEntity.isPresent()){
             throw new ClientNotFoundException("Le code client n'existe pas : " + clientCode);
         }
@@ -93,8 +93,8 @@ public class ClientServiceImpl implements ClientService {
      * @throws ClientNotFoundException
      */
     @Override
-    public ClientEntity loadClientById(Long id) throws ClientNotFoundException {
-        Optional<ClientEntity> clientEntity = clientRepository.findById(id);
+    public UserEntity loadClientById(Long id) throws ClientNotFoundException {
+        Optional<UserEntity> clientEntity = clientRepository.findById(id);
         if(!clientEntity.isPresent()){
             throw new ClientNotFoundException("Le client avec l'id n'existe pas : " + id);
         }
@@ -110,12 +110,12 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void createClient(CreateClientDto createClientDto){
 
-        ClientEntity clientEntity = clientMapper.convert(createClientDto, authorityRepository)
+        UserEntity userEntity = clientMapper.convert(createClientDto, authorityRepository)
                                         .setClientCode(ClientUtil.createCodeClient())
                                         .setPassword(bCryptManagerUtil.getPasswordEncoder().encode(createClientDto.getPassword()))
                 ;
 
-        clientRepository.save(clientEntity);
+        clientRepository.save(userEntity);
     }
 
     /**
@@ -130,12 +130,12 @@ public class ClientServiceImpl implements ClientService {
         AuthorityEntity authorityEntity = this.authorityRepository.findByName(clientDto.getAuthority());
         // TODO EXCEPTION
 
-        ClientEntity clientEntity = this.loadClientById(clientDto.getId());
-        clientEntity.setFirstname(clientDto.getFirstname())
+        UserEntity userEntity = this.loadClientById(clientDto.getId());
+        userEntity.setFirstname(clientDto.getFirstname())
                     .setLastname(clientDto.getLastname())
                     .setAuthorityEntity(authorityEntity)
                     .setEmail(clientDto.getEmail());
-        clientRepository.save(clientEntity);
+        clientRepository.save(userEntity);
     }
 
     /**

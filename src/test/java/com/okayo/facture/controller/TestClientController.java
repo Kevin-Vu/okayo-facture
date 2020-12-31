@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okayo.facture.configuration.BaseTest;
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
-import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
 import com.okayo.facture.factory.ClientFactoryUtils;
 import com.okayo.facture.service.ClientService;
 import org.junit.Assert;
@@ -59,9 +59,9 @@ public class TestClientController extends BaseTest {
     public void testCreateClient() throws Exception {
 
         // Given
-        ClientEntity clientEntity = clientService.loadClientByCodeClient("CU-AD-SG-585");
+        UserEntity userEntity = clientService.loadClientByCodeClient("CU-AD-SG-585");
         CreateClientDto createClientDto = ClientFactoryUtils.generateCreateClientDto()
-                                                            .setCompany(clientEntity.getCompanyEntity().getName());
+                                                            .setCompany(userEntity.getCompanyEntity().getName());
         String url = "/api/auth/manager/client";
 
         // When
@@ -84,9 +84,9 @@ public class TestClientController extends BaseTest {
     public void testCreateClientUserAuthority() throws Exception {
 
         // Given
-        ClientEntity clientEntity = clientService.loadClientByCodeClient("CU-MC-SG-455");
+        UserEntity userEntity = clientService.loadClientByCodeClient("CU-MC-SG-455");
         CreateClientDto createClientDto = ClientFactoryUtils.generateCreateClientDto()
-                                            .setCompany(clientEntity.getCompanyEntity().getName());
+                                            .setCompany(userEntity.getCompanyEntity().getName());
         String url = "/api/auth/manager/client";
 
         // When
@@ -122,10 +122,10 @@ public class TestClientController extends BaseTest {
 
         // Then
         ClientDto clientDto = jsonClientDto.parse(response.getContentAsString()).getObject();
-        ClientEntity clientEntity = clientService.loadClientByCodeClient(clientCode);
+        UserEntity userEntity = clientService.loadClientByCodeClient(clientCode);
 
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
-        Assert.assertEquals(clientEntity.getId(), clientDto.getId());
+        Assert.assertEquals(userEntity.getId(), clientDto.getId());
     }
 
     /**
@@ -160,10 +160,10 @@ public class TestClientController extends BaseTest {
     public void testUpdateClient() throws Exception{
 
         // Given
-        ClientEntity clientEntityUpdater = clientService.loadClientByCodeClient("CU-AD-SG-585");
+        UserEntity userEntityUpdater = clientService.loadClientByCodeClient("CU-AD-SG-585");
         ClientDto clientDto = ClientFactoryUtils.generateClientDto()
                 .setId(5L)
-                .setCompany(clientEntityUpdater.getCompanyEntity().getName());
+                .setCompany(userEntityUpdater.getCompanyEntity().getName());
         String url = "/api/auth/manager/client";
 
         // When
@@ -173,13 +173,13 @@ public class TestClientController extends BaseTest {
         ).andReturn().getResponse();
 
         // Then
-        ClientEntity clientEntity = clientService.loadClientById(5L);
+        UserEntity userEntity = clientService.loadClientById(5L);
 
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
-        Assert.assertEquals(clientEntity.getId(), clientDto.getId());
-        Assert.assertEquals(clientEntity.getFirstname(), clientDto.getFirstname());
-        Assert.assertEquals(clientEntity.getLastname(), clientDto.getLastname());
-        Assert.assertEquals(clientEntity.getEmail(), clientDto.getEmail());
+        Assert.assertEquals(userEntity.getId(), clientDto.getId());
+        Assert.assertEquals(userEntity.getFirstname(), clientDto.getFirstname());
+        Assert.assertEquals(userEntity.getLastname(), clientDto.getLastname());
+        Assert.assertEquals(userEntity.getEmail(), clientDto.getEmail());
     }
 
     /**
@@ -191,9 +191,9 @@ public class TestClientController extends BaseTest {
     public void testUpdateBadClient() throws Exception{
 
         // Given
-        ClientEntity clientEntity = clientService.loadClientByCodeClient("CU-AD-SG-585");
+        UserEntity userEntity = clientService.loadClientByCodeClient("CU-AD-SG-585");
         ClientDto clientDto = ClientFactoryUtils.generateClientDto()
-                                                .setCompany(clientEntity.getCompanyEntity().getName()).setId(-1L);
+                                                .setCompany(userEntity.getCompanyEntity().getName()).setId(-1L);
 
         // When
         MockHttpServletResponse response = mockMvc.perform(

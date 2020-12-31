@@ -2,7 +2,7 @@ package com.okayo.facture.controller;
 
 import com.okayo.facture.dto.designation.CreateDesignationDto;
 import com.okayo.facture.dto.invoice.InvoiceDto;
-import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.entity.referentiel.UserEntity;
 import com.okayo.facture.exception.badrequest.DesignationBadRequestException;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
 import com.okayo.facture.security.CurrentUser;
@@ -40,8 +40,8 @@ public class InvoiceController {
             throw new DesignationBadRequestException("Les designations contiennent des mauvaises informations");
         }
 
-        ClientEntity clientEntity = clientService.loadClientById(user.getId());
-        invoiceService.createFacture(createDesignationDtoList, clientEntity);
+        UserEntity userEntity = clientService.loadClientById(user.getId());
+        invoiceService.createFacture(createDesignationDtoList, userEntity);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -56,8 +56,8 @@ public class InvoiceController {
     @ApiOperation(value = "Récupère toutes les factures d'un client")
     @GetMapping(value = "/api/auth/facture")
     public ResponseEntity<List<InvoiceDto>> getAllFactureForClient(CurrentUser user) throws ClientNotFoundException {
-        ClientEntity clientEntity = clientService.loadClientById(user.getId());
-        List<InvoiceDto> invoiceDtoList = invoiceService.getAllFactureForClient(clientEntity);
+        UserEntity userEntity = clientService.loadClientById(user.getId());
+        List<InvoiceDto> invoiceDtoList = invoiceService.getAllFactureForClient(userEntity);
 
         return new ResponseEntity<>(invoiceDtoList, HttpStatus.OK);
     }

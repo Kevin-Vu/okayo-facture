@@ -1,7 +1,7 @@
 package com.okayo.facture.dto.mapper;
 
 import com.okayo.facture.dto.taxe.TaxeDto;
-import com.okayo.facture.entity.TaxeEntity;
+import com.okayo.facture.entity.referentiel.TaxeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
