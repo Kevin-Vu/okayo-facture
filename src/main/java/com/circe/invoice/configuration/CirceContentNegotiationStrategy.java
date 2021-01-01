@@ -7,7 +7,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OkayoContentNegotiationStrategy implements ContentNegotiationStrategy {
+public class CirceContentNegotiationStrategy implements ContentNegotiationStrategy {
 
     /**
      * Custom media type for the response

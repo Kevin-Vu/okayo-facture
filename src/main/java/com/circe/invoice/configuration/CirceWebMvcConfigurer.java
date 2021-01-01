@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class OkayoWebMvcConfigurer implements WebMvcConfigurer {
+public class CirceWebMvcConfigurer implements WebMvcConfigurer {
 
     /**
      * Configure content negociation
@@ -15,6 +15,6 @@ public class OkayoWebMvcConfigurer implements WebMvcConfigurer {
         configurer.useRegisteredExtensionsOnly(false)
                 // DEPRECATED IN SPRING 5.favorPathExtension(false) // disable the fact that Spring determines the type mime on url extension
                 .ignoreAcceptHeader(true)
-                .defaultContentTypeStrategy(new OkayoContentNegotiationStrategy());
+                .defaultContentTypeStrategy(new CirceContentNegotiationStrategy());
     }
 }
