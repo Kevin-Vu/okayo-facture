@@ -1,16 +1,18 @@
 package com.circe.invoice.security;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-@Accessors(chain = true)
+@Getter
+@Setter
+@Builder
 public class CurrentUser extends User {
 
     private Long id;

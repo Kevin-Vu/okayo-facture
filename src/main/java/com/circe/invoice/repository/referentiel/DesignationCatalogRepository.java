@@ -1,4 +1,4 @@
-package com.circe.invoice.repository;
+package com.circe.invoice.repository.referentiel;
 
 import com.circe.invoice.entity.referentiel.DesignationCatalogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

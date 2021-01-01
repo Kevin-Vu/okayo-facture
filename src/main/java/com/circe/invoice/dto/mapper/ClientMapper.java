@@ -2,7 +2,7 @@ package com.circe.invoice.dto.mapper;
 
 import com.circe.invoice.entity.referentiel.AuthorityEntity;
 import com.circe.invoice.entity.referentiel.UserEntity;
-import com.circe.invoice.repository.AuthorityRepository;
+import com.circe.invoice.repository.referentiel.AuthorityRepository;
 import com.circe.invoice.dto.client.ClientDto;
 import com.circe.invoice.dto.client.CreateClientDto;
 import org.mapstruct.*;

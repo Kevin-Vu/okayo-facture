@@ -1,15 +1,17 @@
 package com.circe.invoice.dto.invoice;
 
-import com.circe.invoice.dto.designation.DesignationDto;
 import com.circe.invoice.dto.client.ClientDto;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import com.circe.invoice.dto.designation.DesignationDto;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@Accessors(chain = true)
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class InvoiceDto {
 
     private Long id;

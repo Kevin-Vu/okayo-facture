@@ -6,7 +6,7 @@ import com.circe.invoice.entity.referentiel.UserEntity;
 import com.circe.invoice.exception.badrequest.DesignationBadRequestException;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
 import com.circe.invoice.security.CurrentUser;
-import com.circe.invoice.service.ClientService;
+import com.circe.invoice.service.UserService;
 import com.circe.invoice.service.InvoiceService;
 import com.circe.invoice.util.DesignationUtil;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,7 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @Autowired
-    private ClientService clientService;
+    private UserService userService;
 
 
     /**
@@ -40,7 +40,7 @@ public class InvoiceController {
             throw new DesignationBadRequestException("Les designations contiennent des mauvaises informations");
         }
 
-        UserEntity userEntity = clientService.loadClientById(user.getId());
+        UserEntity userEntity = userService.loadClientById(user.getId());
         invoiceService.createFacture(createDesignationDtoList, userEntity);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -56,7 +56,7 @@ public class InvoiceController {
     @ApiOperation(value = "Récupère toutes les factures d'un client")
     @GetMapping(value = "/api/auth/facture")
     public ResponseEntity<List<InvoiceDto>> getAllFactureForClient(CurrentUser user) throws ClientNotFoundException {
-        UserEntity userEntity = clientService.loadClientById(user.getId());
+        UserEntity userEntity = userService.loadClientById(user.getId());
         List<InvoiceDto> invoiceDtoList = invoiceService.getAllFactureForClient(userEntity);
 
         return new ResponseEntity<>(invoiceDtoList, HttpStatus.OK);

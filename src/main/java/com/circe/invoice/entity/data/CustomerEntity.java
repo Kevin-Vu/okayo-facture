@@ -49,6 +49,10 @@ public class CustomerEntity implements Auditable<String, Integer, LocalDateTime>
     @Column(name = "cus_city")
     private String city;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cus_ptr_com_id")
+    private CompanyEntity compagny;
+
     @Column(name = "cus_created_by")
     @CreatedBy
     private String createdBy;

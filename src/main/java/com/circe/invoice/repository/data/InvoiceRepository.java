@@ -1,4 +1,4 @@
-package com.circe.invoice.repository;
+package com.circe.invoice.repository.data;
 
 import com.circe.invoice.entity.referentiel.UserEntity;
 import com.circe.invoice.entity.data.InvoiceEntity;

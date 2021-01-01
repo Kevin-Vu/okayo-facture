@@ -2,8 +2,8 @@ package com.circe.invoice.service.impl;
 
 import com.circe.invoice.enumeration.AuthorityEnum;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
-import com.circe.invoice.repository.AuthorityRepository;
-import com.circe.invoice.repository.ClientRepository;
+import com.circe.invoice.repository.referentiel.AuthorityRepository;
+import com.circe.invoice.repository.referentiel.UserRepository;
 import com.google.common.base.Enums;
 import com.circe.invoice.dto.client.ClientDto;
 import com.circe.invoice.dto.client.CreateClientDto;
@@ -11,9 +11,8 @@ import com.circe.invoice.dto.mapper.ClientMapper;
 import com.circe.invoice.entity.referentiel.AuthorityEntity;
 import com.circe.invoice.entity.referentiel.UserEntity;
 import com.circe.invoice.security.CurrentUser;
-import com.circe.invoice.service.ClientService;
+import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.BCryptManagerUtil;
-import com.circe.invoice.util.ClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,13 +26,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("userDetailsService")
-public class ClientServiceImpl implements ClientService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthorityRepository authorityRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private BCryptManagerUtil bCryptManagerUtil;
@@ -53,22 +52,23 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public UserDetails loadUserByUsername(String codeClient){
-        UserEntity userEntity;
-        try{
-            userEntity = this.loadClientByCodeClient(codeClient);
-        }catch (ClientNotFoundException e){
-            throw new UsernameNotFoundException("Le code client n'existe pas : " + codeClient);
-        }
-
-        AuthorityEnum authorityEnum = Enums.getIfPresent(AuthorityEnum.class, userEntity.getAuthorityEntity().getName()).orNull();
-        if(authorityEnum == null){
-            throw new UsernameNotFoundException("User has no role");
-        }
-
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authorityEnum.getValue());
-
-        List<GrantedAuthority> authorities = Collections.singletonList(grantedAuthority);
-        return new CurrentUser(userEntity.getClientCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getCompanyEntity().getName());
+        return null;
+//        UserEntity userEntity;
+//        try{
+//            userEntity = this.loadClientByCodeClient(codeClient);
+//        }catch (ClientNotFoundException e){
+//            throw new UsernameNotFoundException("Le code client n'existe pas : " + codeClient);
+//        }
+//
+//        AuthorityEnum authorityEnum = Enums.getIfPresent(AuthorityEnum.class, userEntity.getAuthority().getName()).orNull();
+//        if(authorityEnum == null){
+//            throw new UsernameNotFoundException("User has no role");
+//        }
+//
+//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authorityEnum.getValue());
+//
+//        List<GrantedAuthority> authorities = Collections.singletonList(grantedAuthority);
+//        return new CurrentUser(userEntity.getClientCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getCompanyEntity().getName());
     }
 
     /**
@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public UserEntity loadClientByCodeClient(String clientCode) throws ClientNotFoundException {
-        Optional<UserEntity> clientEntity = clientRepository.findByClientCode(clientCode);
+        Optional<UserEntity> clientEntity = userRepository.findByUserCode(clientCode);
         if(!clientEntity.isPresent()){
             throw new ClientNotFoundException("Le code client n'existe pas : " + clientCode);
         }
@@ -94,7 +94,7 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public UserEntity loadClientById(Long id) throws ClientNotFoundException {
-        Optional<UserEntity> clientEntity = clientRepository.findById(id);
+        Optional<UserEntity> clientEntity = userRepository.findById(id);
         if(!clientEntity.isPresent()){
             throw new ClientNotFoundException("Le client avec l'id n'existe pas : " + id);
         }
@@ -110,12 +110,12 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void createClient(CreateClientDto createClientDto){
 
-        UserEntity userEntity = clientMapper.convert(createClientDto, authorityRepository)
-                                        .setClientCode(ClientUtil.createCodeClient())
-                                        .setPassword(bCryptManagerUtil.getPasswordEncoder().encode(createClientDto.getPassword()))
-                ;
-
-        clientRepository.save(userEntity);
+//        UserEntity userEntity = clientMapper.convert(createClientDto, authorityRepository)
+//                                        .setClientCode(ClientUtil.createCodeClient())
+//                                        .setPassword(bCryptManagerUtil.getPasswordEncoder().encode(createClientDto.getPassword()))
+//                ;
+//
+//        userRepository.save(userEntity);
     }
 
     /**
@@ -127,29 +127,15 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void updateClient(ClientDto clientDto) throws ClientNotFoundException {
 
-        AuthorityEntity authorityEntity = this.authorityRepository.findByName(clientDto.getAuthority());
-        // TODO EXCEPTION
-
-        UserEntity userEntity = this.loadClientById(clientDto.getId());
-        userEntity.setFirstname(clientDto.getFirstname())
-                    .setLastname(clientDto.getLastname())
-                    .setAuthorityEntity(authorityEntity)
-                    .setEmail(clientDto.getEmail());
-        clientRepository.save(userEntity);
-    }
-
-    /**
-     * Delete client
-     * @param id : id
-     */
-    @Override
-    @Transactional
-    public void deleteClientById(Long id, String company) throws ClientNotFoundException {
-        if(clientRepository.existsClientEntityByIdAndCompanyEntityName(id, company)){
-            clientRepository.deleteById(id);
-        }else{
-            throw new ClientNotFoundException(String.format("Le client avec l'id %d n'existe pas", id));
-        }
+//        AuthorityEntity authorityEntity = this.authorityRepository.findByName(clientDto.getAuthority());
+//        // TODO EXCEPTION
+//
+//        UserEntity userEntity = this.loadClientById(clientDto.getId());
+//        userEntity.setFirstname(clientDto.getFirstname())
+//                    .setLastname(clientDto.getLastname())
+//                    .setAuthorityEntity(authorityEntity)
+//                    .setEmail(clientDto.getEmail());
+//        userRepository.save(userEntity);
     }
 
 }

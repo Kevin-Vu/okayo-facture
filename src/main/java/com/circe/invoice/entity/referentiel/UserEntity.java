@@ -47,6 +47,18 @@ public class UserEntity implements Auditable<String, Integer, LocalDateTime> {
     @JoinColumn(name = "usr_ptr_ath_id", nullable = false)
     private AuthorityEntity authority;
 
+    @Column(name = "usr_pwd_expirity_date")
+    private LocalDateTime pwdExpirityDate;
+
+    @Column(name = "usr_pwd_access_start")
+    private LocalDateTime pwdAccessStart;
+
+    @Column(name = "usr_pwd_access_end")
+    private LocalDateTime pwdAccessEnd;
+
+    @Column(name = "usr_pwd_last_change_date")
+    private LocalDateTime pwdLastChangeDate;
+
     @Column(name = "usr_created_by")
     @CreatedBy
     private String createdBy;

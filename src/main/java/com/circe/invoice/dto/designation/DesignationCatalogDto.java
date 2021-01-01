@@ -1,11 +1,13 @@
 package com.circe.invoice.dto.designation;
 
 import com.circe.invoice.dto.taxe.TaxeDto;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.*;
 
-@Data
-@Accessors(chain = true)
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DesignationCatalogDto {
 
     private String name;

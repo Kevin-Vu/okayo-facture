@@ -11,10 +11,10 @@ import java.util.List;
 @Data
 public class CirceConfiguration {
 
-    @Value("${okayo.configuration.languages}")
+    @Value("${circe.configuration.languages}")
     private List<String> languagesList = new ArrayList<>();
 
-    @Value("${okayo.configuration.echeance.time}")
+    @Value("${circe.configuration.echeance.time}")
     private Integer echeance;
 
 }

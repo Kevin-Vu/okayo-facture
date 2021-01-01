@@ -1,12 +1,14 @@
 package com.circe.invoice.dto.taxe;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.*;
 
 import java.sql.Timestamp;
 
-@Data
-@Accessors(chain = true)
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaxeDto {
 
     private Float amount;

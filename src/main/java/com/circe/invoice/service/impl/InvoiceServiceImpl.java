@@ -1,7 +1,7 @@
 package com.circe.invoice.service.impl;
 
 import com.circe.invoice.configuration.CirceConfiguration;
-import com.circe.invoice.repository.InvoiceRepository;
+import com.circe.invoice.repository.data.InvoiceRepository;
 import com.circe.invoice.service.InvoiceService;
 import com.circe.invoice.dto.designation.CreateDesignationDto;
 import com.circe.invoice.dto.invoice.InvoiceDto;

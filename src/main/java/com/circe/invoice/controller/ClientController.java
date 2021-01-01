@@ -7,7 +7,7 @@ import com.circe.invoice.entity.referentiel.UserEntity;
 import com.circe.invoice.exception.badrequest.ClientBadRequestException;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
 import com.circe.invoice.security.CurrentUser;
-import com.circe.invoice.service.ClientService;
+import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.ClientUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
 
     @Autowired
-    private ClientService clientService;
+    private UserService userService;
 
     @Autowired
     private ClientMapper clientMapper;
@@ -38,7 +38,7 @@ public class ClientController {
         if(!ClientUtil.checkUserBelongsToCompany(user, createClientDto.getCompany())){
             throw new ClientBadRequestException("Impossible de créer un client d'une autre entreprise");
         }
-        clientService.createClient(createClientDto);
+        userService.createClient(createClientDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class ClientController {
     @ApiOperation(value = "Récupère un client par son code client")
     @GetMapping(value = "/api/auth/client")
     public ResponseEntity<ClientDto> getClientByCodeClient(CurrentUser user, @RequestParam String clientCode) throws ClientNotFoundException, ClientBadRequestException {
-        UserEntity userEntity = clientService.loadClientByCodeClient(clientCode);
+        UserEntity userEntity = userService.loadClientByCodeClient(clientCode);
         if(!ClientUtil.checkUserBelongsToCompany(user, userEntity)){
             throw new ClientBadRequestException("Impossible de récupérer un client d'une autre entreprise");
         }
@@ -69,7 +69,7 @@ public class ClientController {
     @ApiOperation(value = "Récupère le client courant")
     @GetMapping(value = "/api/auth/client/current")
     public ResponseEntity<ClientDto> getCurrentClient(CurrentUser user) throws ClientNotFoundException {
-        UserEntity userEntity = clientService.loadClientById(user.getId());
+        UserEntity userEntity = userService.loadClientById(user.getId());
         ClientDto clientDto = clientMapper.convert(userEntity);
         return new ResponseEntity<>(clientDto, HttpStatus.OK);
     }
@@ -90,7 +90,7 @@ public class ClientController {
         if(!ClientUtil.checkUserBelongsToCompany(user, clientDto.getCompany())){
             throw new ClientBadRequestException("Impossible de mettre à jour un client d'une autre entreprise");
         }
-        clientService.updateClient(clientDto);
+        userService.updateClient(clientDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -106,7 +106,7 @@ public class ClientController {
         if(clientId == null){
             throw new ClientNotFoundException("Le client est null");
         }
-        clientService.deleteClientById(clientId, user.getCompanyName());
+        userService.deleteClientById(clientId, user.getCompanyName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
