@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
      * @return : CurrentUser which extends Spring's User object
      */
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String userCode){
         UserEntity userEntity;
         try{
@@ -65,7 +66,8 @@ public class UserServiceImpl implements UserService {
                                                 .map(r -> new SimpleGrantedAuthority(r.getName()))
                                                 .collect(Collectors.toList());
 
-        return new CurrentUser(userEntity.getUserCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getEmail());
+        return new CurrentUser(userEntity.getUserCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getEmail(),
+                    userEntity.getPwdExpirationDate(), userEntity.getPwdAccessStart(), userEntity.getPwdAccessEnd());
     }
 
     /**
