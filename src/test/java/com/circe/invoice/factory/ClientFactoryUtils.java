@@ -11,19 +11,19 @@ public class ClientFactoryUtils {
     private ClientFactoryUtils(){}
 
     public static ClientDto generateClientDto(){
-        return new ClientDto().setClientCode(ClientUtil.createCodeClient())
+        return new ClientDto()/*.setClientCode(ClientUtil.createCodeClient())
                                 .setFirstname(RandomStringUtils.randomAlphanumeric(30))
                                 .setLastname(RandomStringUtils.randomAlphanumeric(30))
                                 .setEmail(RandomStringUtils.randomAlphabetic(15))
-                                .setAuthority(AuthorityEnum.USER.getValue());
+                                .setAuthority(AuthorityEnum.USER.getValue())*/;
     }
 
     public static CreateClientDto generateCreateClientDto(){
-        return new CreateClientDto()
+        return new CreateClientDto()/*
                 .setFirstname(RandomStringUtils.randomAlphanumeric(30))
                 .setLastname(RandomStringUtils.randomAlphanumeric(30))
                 .setEmail(RandomStringUtils.randomAlphabetic(15))
                 .setPassword(RandomStringUtils.randomAlphanumeric(8))
-                .setAuthority(AuthorityEnum.USER.getValue());
+                .setAuthority(AuthorityEnum.USER.getValue())*/;
     }
 }

@@ -2,7 +2,7 @@ package com.circe.invoice.controller;
 
 import com.circe.invoice.dto.designation.CreateDesignationDto;
 import com.circe.invoice.dto.invoice.InvoiceDto;
-import com.circe.invoice.entity.referentiel.UserEntity;
+import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.exception.badrequest.DesignationBadRequestException;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
 import com.circe.invoice.security.CurrentUser;

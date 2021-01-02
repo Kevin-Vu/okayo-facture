@@ -2,27 +2,20 @@ package com.circe.invoice.service.impl;
 
 import com.circe.invoice.enumeration.AuthorityEnum;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
-import com.circe.invoice.repository.referentiel.AuthorityRepository;
-import com.circe.invoice.repository.referentiel.UserRepository;
-import com.google.common.base.Enums;
+import com.circe.invoice.repository.referential.AuthorityRepository;
+import com.circe.invoice.repository.referential.UserRepository;
 import com.circe.invoice.dto.client.ClientDto;
 import com.circe.invoice.dto.client.CreateClientDto;
 import com.circe.invoice.dto.mapper.ClientMapper;
-import com.circe.invoice.entity.referentiel.AuthorityEntity;
-import com.circe.invoice.entity.referentiel.UserEntity;
-import com.circe.invoice.security.CurrentUser;
+import com.circe.invoice.entity.referential.AuthorityEntity;
+import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.BCryptManagerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Service("userDetailsService")

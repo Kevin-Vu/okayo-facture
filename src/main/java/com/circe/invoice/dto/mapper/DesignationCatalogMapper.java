@@ -1,7 +1,7 @@
 package com.circe.invoice.dto.mapper;
 
 import com.circe.invoice.dto.designation.DesignationCatalogDto;
-import com.circe.invoice.entity.referentiel.DesignationCatalogEntity;
+import com.circe.invoice.entity.referential.DesignationCatalogEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

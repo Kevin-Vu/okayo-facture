@@ -7,7 +7,7 @@ import com.circe.invoice.dto.designation.CreateDesignationDto;
 import com.circe.invoice.dto.invoice.InvoiceDto;
 import com.circe.invoice.dto.mapper.DesignationMapper;
 import com.circe.invoice.dto.mapper.InvoiceMapper;
-import com.circe.invoice.entity.referentiel.UserEntity;
+import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.entity.data.InvoiceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,8 +81,9 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public List<InvoiceDto> getAllFactureForClient(UserEntity userEntity){
-        List<InvoiceEntity> invoiceEntityList = invoiceRepository.findAllByClient(userEntity);
-        return invoiceMapper.convertListInvoiceEntity(invoiceEntityList);
+        return null;
+//        List<InvoiceEntity> invoiceEntityList = invoiceRepository.findAllByClient(userEntity);
+//        return invoiceMapper.convertListInvoiceEntity(invoiceEntityList);
     }
 
 }

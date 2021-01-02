@@ -3,7 +3,7 @@ package com.circe.invoice.controller;
 import com.circe.invoice.dto.client.ClientDto;
 import com.circe.invoice.dto.client.CreateClientDto;
 import com.circe.invoice.dto.mapper.ClientMapper;
-import com.circe.invoice.entity.referentiel.UserEntity;
+import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.exception.badrequest.ClientBadRequestException;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
 import com.circe.invoice.security.CurrentUser;
@@ -55,8 +55,8 @@ public class ClientController {
         if(!ClientUtil.checkUserBelongsToCompany(user, userEntity)){
             throw new ClientBadRequestException("Impossible de récupérer un client d'une autre entreprise");
         }
-        ClientDto clientDto = clientMapper.convert(userEntity);
-        return new ResponseEntity<>(clientDto, HttpStatus.OK);
+      //  ClientDto clientDto = clientMapper.convert(userEntity);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     /**
@@ -70,8 +70,8 @@ public class ClientController {
     @GetMapping(value = "/api/auth/client/current")
     public ResponseEntity<ClientDto> getCurrentClient(CurrentUser user) throws ClientNotFoundException {
         UserEntity userEntity = userService.loadClientById(user.getId());
-        ClientDto clientDto = clientMapper.convert(userEntity);
-        return new ResponseEntity<>(clientDto, HttpStatus.OK);
+       // ClientDto clientDto = clientMapper.convert(userEntity);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 
@@ -106,7 +106,7 @@ public class ClientController {
         if(clientId == null){
             throw new ClientNotFoundException("Le client est null");
         }
-        userService.deleteClientById(clientId, user.getCompanyName());
+      //  userService.deleteClientById(clientId, user.getCompanyName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
