@@ -3,7 +3,7 @@ package com.circe.invoice.exception;
 import com.circe.invoice.configuration.CirceConfiguration;
 import com.circe.invoice.exception.badrequest.ClientBadRequestException;
 import com.circe.invoice.exception.badrequest.DesignationBadRequestException;
-import com.circe.invoice.exception.notfound.ClientNotFoundException;
+import com.circe.invoice.exception.notfound.UserNotFoundException;
 import com.circe.invoice.exception.notfound.DesignationNotFoundException;
 import com.circe.invoice.exception.notfound.FactureNotFoundException;
 import com.circe.invoice.exception.notfound.PropertyKeyNotFoundException;
@@ -101,8 +101,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ClientNotFoundException.class)
-    protected ResponseEntity<Object> handleNotFoundException(ClientNotFoundException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+    protected ResponseEntity<Object> handleNotFoundException(UserNotFoundException ex) {
 
         String messageKey = "exception.not.found.client";
         return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);

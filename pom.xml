@@ -23,6 +23,7 @@
 		<testcontainers.version>1.13.0</testcontainers.version>
 		<postgresql.version>42.2.11</postgresql.version>
 		<liquibase-core.version>3.6.3</liquibase-core.version>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 
 	<dependencies>
@@ -91,6 +92,12 @@
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
 			<version>${liquibase-core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 
 		<dependency>

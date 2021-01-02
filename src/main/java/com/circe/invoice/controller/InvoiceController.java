@@ -4,7 +4,7 @@ import com.circe.invoice.dto.designation.CreateDesignationDto;
 import com.circe.invoice.dto.invoice.InvoiceDto;
 import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.exception.badrequest.DesignationBadRequestException;
-import com.circe.invoice.exception.notfound.ClientNotFoundException;
+import com.circe.invoice.exception.notfound.UserNotFoundException;
 import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.service.InvoiceService;
@@ -35,7 +35,7 @@ public class InvoiceController {
      */
     @ApiOperation(value = "Créé une nouvelle facture pour un client à partir de son id et d'une liste de désignations")
     @PostMapping(value = "/api/auth/manager/facture")
-    public ResponseEntity<HttpStatus> createFacture(CurrentUser user, @RequestBody List<CreateDesignationDto> createDesignationDtoList) throws ClientNotFoundException, DesignationBadRequestException {
+    public ResponseEntity<HttpStatus> createFacture(CurrentUser user, @RequestBody List<CreateDesignationDto> createDesignationDtoList) throws UserNotFoundException, DesignationBadRequestException {
         if(!DesignationUtil.checkListCreateDesignationInput(createDesignationDtoList)){
             throw new DesignationBadRequestException("Les designations contiennent des mauvaises informations");
         }
@@ -51,11 +51,11 @@ public class InvoiceController {
      * Get all facture for a given client
      * @param user : CurrentUser
      * @return : list of FactureDto
-     * @throws ClientNotFoundException
+     * @throws UserNotFoundException
      */
     @ApiOperation(value = "Récupère toutes les factures d'un client")
     @GetMapping(value = "/api/auth/facture")
-    public ResponseEntity<List<InvoiceDto>> getAllFactureForClient(CurrentUser user) throws ClientNotFoundException {
+    public ResponseEntity<List<InvoiceDto>> getAllFactureForClient(CurrentUser user) throws UserNotFoundException {
         UserEntity userEntity = userService.loadClientById(user.getId());
         List<InvoiceDto> invoiceDtoList = invoiceService.getAllFactureForClient(userEntity);
 

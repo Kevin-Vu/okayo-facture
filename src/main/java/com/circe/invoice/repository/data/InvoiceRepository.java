@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Long> {
+public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Integer> {
 
     List<InvoiceEntity> findAllByCustomer(CustomerEntity customerEntity);
 

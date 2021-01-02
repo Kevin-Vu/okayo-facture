@@ -1,7 +1,8 @@
 package com.circe.invoice.service.impl;
 
+import com.circe.invoice.entity.referential.RightEntity;
 import com.circe.invoice.enumeration.AuthorityEnum;
-import com.circe.invoice.exception.notfound.ClientNotFoundException;
+import com.circe.invoice.exception.notfound.UserNotFoundException;
 import com.circe.invoice.repository.referential.AuthorityRepository;
 import com.circe.invoice.repository.referential.UserRepository;
 import com.circe.invoice.dto.client.ClientDto;
@@ -9,14 +10,20 @@ import com.circe.invoice.dto.client.CreateClientDto;
 import com.circe.invoice.dto.mapper.ClientMapper;
 import com.circe.invoice.entity.referential.AuthorityEntity;
 import com.circe.invoice.entity.referential.UserEntity;
+import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.BCryptManagerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("userDetailsService")
 public class UserServiceImpl implements UserService {
@@ -39,42 +46,39 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Implement a custom Principal for Spring Security, in CurrentUser we have the id of the user
-     * @param codeClient : code client
+     * Implement a custom Principal for Spring Security, in CurrentUser we have the id of the user and its email
+     * @param userCode : user code
      * @return : CurrentUser which extends Spring's User object
      */
     @Override
-    public UserDetails loadUserByUsername(String codeClient){
-        return null;
-//        UserEntity userEntity;
-//        try{
-//            userEntity = this.loadClientByCodeClient(codeClient);
-//        }catch (ClientNotFoundException e){
-//            throw new UsernameNotFoundException("Le code client n'existe pas : " + codeClient);
-//        }
-//
-//        AuthorityEnum authorityEnum = Enums.getIfPresent(AuthorityEnum.class, userEntity.getAuthority().getName()).orNull();
-//        if(authorityEnum == null){
-//            throw new UsernameNotFoundException("User has no role");
-//        }
-//
-//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authorityEnum.getValue());
-//
-//        List<GrantedAuthority> authorities = Collections.singletonList(grantedAuthority);
-//        return new CurrentUser(userEntity.getClientCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getCompanyEntity().getName());
+    public UserDetails loadUserByUsername(String userCode){
+        UserEntity userEntity;
+        try{
+            userEntity = this.loadUserByCode(userCode);
+        }catch (UserNotFoundException e){
+            throw new UsernameNotFoundException(e.getMessage());
+        }
+
+        List<RightEntity> rights = userEntity.getAuthority()
+                .getRightEntities();
+        List<GrantedAuthority> authorities = rights.stream()
+                                                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                                                .collect(Collectors.toList());
+
+        return new CurrentUser(userEntity.getUserCode(), userEntity.getPassword(), authorities, userEntity.getId(), userEntity.getEmail());
     }
 
     /**
-     * Load a client by its client code
-     * @param clientCode : client code
-     * @return : ClientEntity
-     * @throws ClientNotFoundException
+     * Load a User by its user code
+     * @param userCode : user code
+     * @return : UserEntity
+     * @throws UserNotFoundException
      */
     @Override
-    public UserEntity loadClientByCodeClient(String clientCode) throws ClientNotFoundException {
-        Optional<UserEntity> clientEntity = userRepository.findByUserCode(clientCode);
+    public UserEntity loadUserByCode(String userCode) throws UserNotFoundException {
+        Optional<UserEntity> clientEntity = userRepository.findByUserCode(userCode);
         if(!clientEntity.isPresent()){
-            throw new ClientNotFoundException("Le code client n'existe pas : " + clientCode);
+            throw new UserNotFoundException("User doesn't exist : " + userCode);
         }
         return clientEntity.get();
     }
@@ -83,15 +87,15 @@ public class UserServiceImpl implements UserService {
      * Load a client by its id
      * @param id : id
      * @return : ClientEntity
-     * @throws ClientNotFoundException
+     * @throws UserNotFoundException
      */
     @Override
-    public UserEntity loadClientById(Long id) throws ClientNotFoundException {
-        Optional<UserEntity> clientEntity = userRepository.findById(id);
-        if(!clientEntity.isPresent()){
-            throw new ClientNotFoundException("Le client avec l'id n'existe pas : " + id);
+    public UserEntity loadClientById(Integer id) throws UserNotFoundException {
+        UserEntity clientEntity = userRepository.findById(id).orElse(null);
+        if(clientEntity != null){
+            throw new UserNotFoundException("Le client avec l'id n'existe pas : " + id);
         }
-        return clientEntity.get();
+        return clientEntity;
     }
 
     /**
@@ -118,7 +122,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void updateClient(ClientDto clientDto) throws ClientNotFoundException {
+    public void updateClient(ClientDto clientDto) throws UserNotFoundException {
 
 //        AuthorityEntity authorityEntity = this.authorityRepository.findByName(clientDto.getAuthority());
 //        // TODO EXCEPTION

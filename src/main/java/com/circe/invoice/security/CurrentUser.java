@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,13 +16,36 @@ import java.util.List;
 @Accessors(chain = true)
 public class CurrentUser extends User {
 
-    private Long id;
-    private String companyName;
+    private Integer id;
+    private String email;
+    private LocalDateTime expirationDatePwd;
+    private LocalDateTime startDateAccess;
+    private LocalDateTime endDateAccess;
 
-    public CurrentUser(String codeClient, String password, List<GrantedAuthority> authorities, Long id, String companyName) {
+    public CurrentUser(String userCode, String password, List<GrantedAuthority> authorities, Integer id, String email) {
 
-        super(codeClient, password, authorities);
+        super(userCode, password, authorities);
         this.id = id;
-        this.companyName = companyName;
+        this.email = email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired(){
+        return this.endDateAccess != null && this.endDateAccess.isAfter(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean isAccountNonLocked(){
+        return this.startDateAccess != null && this.startDateAccess.isBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired(){
+        return this.expirationDatePwd != null && this.expirationDatePwd.isAfter(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean isEnabled(){
+        return true;
     }
 }
