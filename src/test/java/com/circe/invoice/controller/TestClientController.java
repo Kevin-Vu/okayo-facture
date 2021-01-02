@@ -1,12 +1,29 @@
 package com.circe.invoice.controller;
 
 import com.circe.invoice.configuration.BaseTest;
+import com.circe.invoice.util.BCryptManagerUtil;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 //@TestPropertySource(locations = {"classpath:test.properties"})
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureMockMvc
-public class TestClientController extends BaseTest {
+public class TestClientController /*extends BaseTest*/ {
+
+
+    @Autowired
+    private BCryptManagerUtil bCryptManagerUtil;
+
+    @Test
+    public void de(){
+        String s = bCryptManagerUtil.getPasswordEncoder()
+                .encode("password");
+        System.out.println(s);
+    }
 
 //    @Autowired
 //    private MockMvc mockMvc;

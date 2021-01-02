@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, String> localizedMessageMap = new HashMap<>();
         String message;
 
-        for(String language : configuration.getLanguagesList()) {
+        for(String language : Arrays.asList("fr", "en")) {
             try {
                 message = getMessageInLanguage(messageKey, language);
                 localizedMessageMap.put(language, message);
