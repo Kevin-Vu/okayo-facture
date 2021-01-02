@@ -3,7 +3,7 @@ package com.circe.invoice.service;
 import com.circe.invoice.exception.notfound.ClientNotFoundException;
 import com.circe.invoice.dto.client.ClientDto;
 import com.circe.invoice.dto.client.CreateClientDto;
-import com.circe.invoice.entity.referentiel.UserEntity;
+import com.circe.invoice.entity.referential.UserEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {

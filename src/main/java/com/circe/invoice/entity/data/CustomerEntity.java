@@ -9,6 +9,7 @@ import org.springframework.data.domain.Auditable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,15 +21,15 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "d_customer")
-public class CustomerEntity implements Auditable<String, Integer, LocalDateTime> {
+public class CustomerEntity implements Serializable, Auditable<String, Integer, LocalDateTime> {
 
     @Id
     @SequenceGenerator(name = "customer_generator", sequenceName = "customer_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
     @Column(name = "cus_id")
-    private Long id;
+    private Integer id;
 
-    @Column(name = "cus_fistname")
+    @Column(name = "cus_firstname")
     private String firstname;
 
     @Column(name = "cus_lastname")

@@ -1,0 +1,6 @@
+com/circe/invoice/controller/TestClientController.class
+com/circe/invoice/configuration/BaseTest.class
+com/circe/invoice/factory/ClientFactoryUtils.class
+com/circe/invoice/factory/DesignationFactoryUtils.class
+com/circe/invoice/controller/TestInvoiceController.class
+com/circe/invoice/configuration/BaseTest$Initializer.class
