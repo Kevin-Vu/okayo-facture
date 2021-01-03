@@ -10,10 +10,8 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-//    @Mapping(source = "authorityEntity.name", target = "authority")
-//    @Mapping(source = "companyEntity.name", target = "company")
-//    ClientDto convert(UserEntity userEntity);
-
+    @Mapping(source = "authority.name", target = "authority")
+    UserDto convert(UserEntity userEntity);
 
     /* ************************************************************************************************************** */
     @Mapping(target = "authority", ignore = true)
@@ -40,5 +38,8 @@ public interface UserMapper {
         }
     }
     /* ************************************************************************************************************** */
+
+    @Mapping(target = "authority", ignore = true)
+    void updateEntityFromDto(UserDto userDto, @MappingTarget UserEntity userEntity);
 
 }

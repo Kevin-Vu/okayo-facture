@@ -98,4 +98,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="p001_05_add_pdt_type_design" author="kvu">
+        <addColumn tableName="d_designation">
+            <column name="dsg_product_type" afterColumn="dsg_total_taxes" type="VARCHAR(60)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

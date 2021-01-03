@@ -10,6 +10,7 @@ public interface UserService extends UserDetailsService {
 
     UserEntity loadUserByCode(String userCode) throws UserNotFoundException;
     UserEntity loadUserById(Integer id) throws UserNotFoundException;
-    void createUser(CreateUserDto clientDto);
-    void updateUser(UserDto userDto) throws UserNotFoundException;
+    UserDto createUser(CreateUserDto clientDto);
+    UserDto updateUser(UserDto userDto) throws UserNotFoundException;
+    void deleteUser(Integer id);
 }

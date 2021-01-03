@@ -16,5 +16,6 @@ public class DesignationDto {
     private Integer quantity;
     private Float discount;
     private Float totalNoTaxes;
+    private String productType;
 
 }

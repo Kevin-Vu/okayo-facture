@@ -1,15 +1,19 @@
 package com.circe.invoice.controller;
 
 import com.circe.invoice.dto.mapper.UserMapper;
+import com.circe.invoice.dto.user.CreateUserDto;
+import com.circe.invoice.dto.user.UserDto;
+import com.circe.invoice.exception.badrequest.UserBadRequestException;
+import com.circe.invoice.exception.notfound.UserNotFoundException;
 import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
+import com.circe.invoice.util.UserUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -20,97 +24,72 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping(value = "/api/auth/client")
+    /**
+     * Create an UserEntity in database from a CreateUserDto
+     *
+     * @param createUserDto : CreateUserDto
+     *
+     * @return : UserDto
+     */
+    @ApiOperation(value = "Create a new user")
+    @PostMapping(value = "/api/auth/client")
     @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
-    public ResponseEntity<String> getClientByCodeClient(CurrentUser user)  {
-        return new ResponseEntity<>("defef", HttpStatus.OK);
+    public ResponseEntity<UserDto> createUser(CurrentUser user, @RequestBody CreateUserDto createUserDto) throws UserBadRequestException {
+        if(!UserUtil.checkCreateUserInput(createUserDto))
+            throw new UserBadRequestException("CreateUserDto contains bad input");
+        return new ResponseEntity<>(userService.createUser(createUserDto), HttpStatus.OK);
     }
 
-//    /**
-//     * Create a ClientEntity in database from a CreateClientDto
-//     * @param createClientDto : CreateClientDto
-//     * @return : Response status
-//     */
-//    @ApiOperation(value = "Créer un nouveau client")
-//    @PostMapping(value = "/api/auth/manager/client")
-//    public ResponseEntity<HttpStatus> createClient(CurrentUser user, @RequestBody CreateClientDto createClientDto) throws ClientBadRequestException {
-//        if(!ClientUtil.checkCreateClientInput(createClientDto) || !ClientUtil.checkUserBelongsToCompany(user, createClientDto.getCompany())){
-//            throw new ClientBadRequestException("Le client contient des informations erronés");
-//        }
-//        if(!ClientUtil.checkUserBelongsToCompany(user, createClientDto.getCompany())){
-//            throw new ClientBadRequestException("Impossible de créer un client d'une autre entreprise");
-//        }
-//        userService.createClient(createClientDto);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Read a client in database from a given name
-//     * @param clientCode : client code
-//     * @return : ClientDto
-//     * @throws UserNotFoundException
-//     */
-//    @ApiOperation(value = "Récupère un client par son code client")
-//    @GetMapping(value = "/api/auth/client")
-//    public ResponseEntity<ClientDto> getClientByCodeClient(CurrentUser user, @RequestParam String clientCode) throws UserNotFoundException, ClientBadRequestException {
-//        UserEntity userEntity = userService.loadClientByCodeClient(clientCode);
-//        if(!ClientUtil.checkUserBelongsToCompany(user, userEntity)){
-//            throw new ClientBadRequestException("Impossible de récupérer un client d'une autre entreprise");
-//        }
-//      //  ClientDto clientDto = clientMapper.convert(userEntity);
-//        return new ResponseEntity<>(null, HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Get current client
-//     * @param user : CurrentUser
-//     * @return : ClientDto
-//     * @throws UserNotFoundException
-//     * @throws ClientBadRequestException
-//     */
-//    @ApiOperation(value = "Récupère le client courant")
-//    @GetMapping(value = "/api/auth/client/current")
-//    public ResponseEntity<ClientDto> getCurrentClient(CurrentUser user) throws UserNotFoundException {
-//        UserEntity userEntity = userService.loadClientById(user.getId());
-//       // ClientDto clientDto = clientMapper.convert(userEntity);
-//        return new ResponseEntity<>(null, HttpStatus.OK);
-//    }
-//
-//
-//    /**
-//     * Update a client
-//     * @param clientDto : ClientDto
-//     * @return : Response status
-//     * @throws UserNotFoundException
-//     */
-//    @ApiOperation(value = "Met à jour un client")
-//    @PatchMapping(value = "/api/auth/manager/client")
-//    public ResponseEntity<HttpStatus> updateClient(CurrentUser user, @RequestBody ClientDto clientDto) throws UserNotFoundException, ClientBadRequestException {
-//        if(!ClientUtil.checkClientInput(clientDto)){
-//            throw new ClientBadRequestException("Le client contient des informations erronés");
-//        }
-//        if(!ClientUtil.checkUserBelongsToCompany(user, clientDto.getCompany())){
-//            throw new ClientBadRequestException("Impossible de mettre à jour un client d'une autre entreprise");
-//        }
-//        userService.updateClient(clientDto);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Delete a client for a given id
-//     * @param clientId : id of the client to delete
-//     * @return : Response status
-//     * @throws UserNotFoundException
-//     */
-//    @ApiOperation(value = "Supprime un client d'après son id")
-//    @DeleteMapping(value = "/api/auth/admin/client")
-//    public ResponseEntity<HttpStatus> deleteClientById(CurrentUser user, @RequestParam Long clientId) throws UserNotFoundException {
-//        if(clientId == null){
-//            throw new UserNotFoundException("Le client est null");
-//        }
-//      //  userService.deleteClientById(clientId, user.getCompanyName());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    /**
+     * Get an User from its id
+     *
+     * @param id : user id
+     *
+     * @return : UserDto
+     */
+    @ApiOperation(value = "Get a user by its id")
+    @GetMapping(value = "/api/auth/client")
+    public ResponseEntity<UserDto> getUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException, UserNotFoundException {
+        if(id == null || id < 0)
+            throw new UserBadRequestException("Bad id");
+        if(UserUtil.isAdmin(user) || user.getId().equals(id))
+            new ResponseEntity<>(userService.loadUserById(id), HttpStatus.OK);;
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Delete an user by its id
+     *
+     * @param user : user id
+     *
+     * @return : HttpStatus
+     */
+    @ApiOperation(value = "Delete an user")
+    @DeleteMapping(value = "/api/auth/client")
+    @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
+    public ResponseEntity<HttpStatus> deleteUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException {
+        if(id == null || id < 0)
+            throw new UserBadRequestException("Bad id");
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Update an UserEntity from an UserDto
+     *
+     * @param userDto : UserDto
+     *
+     * @return : UserDto
+     */
+    @ApiOperation(value = "Update an user")
+    @PutMapping(value = "/api/auth/client")
+    public ResponseEntity<UserDto> updateUser(CurrentUser user, @RequestBody UserDto userDto) throws UserBadRequestException, UserNotFoundException {
+        if(!UserUtil.checkUserInput(userDto))
+            throw new UserBadRequestException("UserDto contains bad input");
+        if(UserUtil.isAdmin(user) || user.getId().equals(userDto.getId()))
+            new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 
 
 }

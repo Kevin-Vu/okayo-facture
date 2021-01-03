@@ -1,21 +1,24 @@
 package com.circe.invoice.dto.mapper;
 
-import com.circe.invoice.dto.designation.CreateDesignationDto;
+import com.circe.invoice.dto.designation.DesignationCatalogDto;
+import com.circe.invoice.dto.designation.DesignationDto;
 import com.circe.invoice.entity.data.DesignationEntity;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.NullValueMappingStrategy;
+import com.circe.invoice.entity.referential.DesignationCatalogEntity;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = DesignationCatalogMapper.class)
+@Mapper(componentModel = "spring")
 public interface DesignationMapper {
 
-    @Named("convertCreateDesignationDtoToEntity")
-    DesignationEntity convert(CreateDesignationDto createDesignationDto);
+    @Mapping(target = "productType", source = "entity.productType.productType")
+    @Mapping(target = "amount", source = "entity.productType.amount")
+    DesignationCatalogDto convert(DesignationCatalogEntity entity);
 
-    @IterableMapping(qualifiedByName = "convertCreateDesignationDtoToEntity", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-    List<DesignationEntity> convertListCreateDto(List<CreateDesignationDto> createDesignationDtoList);
+    @Named("convertDesignationEntityToDto")
+    DesignationDto convert(DesignationEntity entity);
+
+    @IterableMapping(qualifiedByName = "convertDesignationEntityToDto", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+    List<DesignationDto> convert(List<DesignationEntity> entityList);
 
 }

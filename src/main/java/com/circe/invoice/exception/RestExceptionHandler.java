@@ -1,12 +1,9 @@
 package com.circe.invoice.exception;
 
 import com.circe.invoice.configuration.CirceConfiguration;
-import com.circe.invoice.exception.badrequest.ClientBadRequestException;
-import com.circe.invoice.exception.badrequest.DesignationBadRequestException;
-import com.circe.invoice.exception.notfound.UserNotFoundException;
-import com.circe.invoice.exception.notfound.DesignationNotFoundException;
-import com.circe.invoice.exception.notfound.FactureNotFoundException;
+import com.circe.invoice.exception.badrequest.UserBadRequestException;
 import com.circe.invoice.exception.notfound.PropertyKeyNotFoundException;
+import com.circe.invoice.exception.notfound.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -81,13 +78,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /* ---------------------- NOT FOUND EXCEPTIONS ---------------------- */
 
-    @ExceptionHandler(FactureNotFoundException.class)
-    protected ResponseEntity<Object> handleNotFoundException(FactureNotFoundException ex) {
-
-        String messageKey = "exception.not.found.facture";
-        return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(PropertyKeyNotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(PropertyKeyNotFoundException ex) {
 
@@ -95,33 +85,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DesignationNotFoundException.class)
-    protected ResponseEntity<Object> handleNotFoundException(DesignationNotFoundException ex) {
-
-        String messageKey = "exception.not.found.designation";
-        return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(UserNotFoundException ex) {
 
-        String messageKey = "exception.not.found.client";
+        String messageKey = "exception.not.found.user";
         return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.NOT_FOUND);
     }
 
     /* ----------------------- BAD REQUEST  EXCEPTIONS ---------------------- */
 
-    @ExceptionHandler(ClientBadRequestException.class)
-    protected ResponseEntity<Object> handleBadRequestException(ClientBadRequestException ex) {
+    @ExceptionHandler(UserBadRequestException.class)
+    protected ResponseEntity<Object> handleBadRequestException(UserBadRequestException ex) {
 
-        String messageKey = "exception.bad.request.client";
-        return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(DesignationBadRequestException.class)
-    protected ResponseEntity<Object> handleBadRequestException(DesignationBadRequestException ex) {
-
-        String messageKey = "exception.bad.request.designation";
+        String messageKey = "exception.bad.request.user";
         return buildResponseEntity(getLocalizedMessageMap(messageKey), HttpStatus.BAD_REQUEST);
     }
 

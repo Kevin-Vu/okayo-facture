@@ -102,28 +102,42 @@ public class UserServiceImpl implements UserService {
      * Create an user
      *
      * @param createUserDto : CreateUserDto
+     *
+     * @return : UserDto
      */
     @Override
     @Transactional
-    public void createUser(CreateUserDto createUserDto){
+    public UserDto createUser(CreateUserDto createUserDto){
         UserEntity userEntity = userMapper.convert(createUserDto, authorityRepository);
         userEntity.setPassword(bCryptManagerUtil.getPasswordEncoder().encode(createUserDto.getPassword()));
-        userRepository.save(userEntity);
+        userEntity = userRepository.save(userEntity);
+        return userMapper.convert(userEntity);
     }
 
     /**
      * Update a user but not its password
      *
      * @param userDto : UserDto
+     *
+     * @return : UserDto
      */
     @Override
     @Transactional
-    public void updateUser(UserDto userDto) throws UserNotFoundException {
+    public UserDto updateUser(UserDto userDto) throws UserNotFoundException {
         UserEntity userEntity = this.loadUserById(userDto.getId());
-        userEntity.setFirstname(userDto.getFirstname());
-        userEntity.setLastname(userDto.getLastname());
-        userEntity.setEmail(userDto.getEmail());
-        userRepository.save(userEntity);
+        userMapper.updateEntityFromDto(userDto, userEntity);
+        userEntity = userRepository.save(userEntity);
+        return userMapper.convert(userEntity);
     }
 
+    /**
+     * Delete an user by its id
+     *
+     * @param id : user id
+     */
+    @Override
+    @Transactional
+    public void deleteUser(Integer id){
+        userRepository.deleteById(id);
+    }
 }

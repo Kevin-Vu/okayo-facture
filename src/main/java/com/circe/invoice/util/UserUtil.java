@@ -2,6 +2,7 @@ package com.circe.invoice.util;
 
 import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
+import com.circe.invoice.security.CurrentUser;
 import org.apache.commons.lang3.StringUtils;
 
 public class UserUtil {
@@ -10,16 +11,16 @@ public class UserUtil {
 
     /**
      * Check the content of a CreateUserDto
+     *
      * @param createUserDto : CreateUserDto
+     *
      * @return : true if input is valid
      */
     public static boolean checkCreateUserInput(CreateUserDto createUserDto){
-        if(createUserDto == null){
+        if(createUserDto == null)
             return false;
-        }
-        return !StringUtils.isBlank(createUserDto.getFirstname()) && !StringUtils.isBlank(createUserDto.getLastname()) &&
-                !StringUtils.isBlank(createUserDto.getPassword()) && !StringUtils.isBlank(createUserDto.getEmail()) &&
-                !StringUtils.isBlank(createUserDto.getLangCode()) && !StringUtils.isBlank(createUserDto.getAuthority());
+        return StringUtils.isNoneBlank(createUserDto.getFirstname(), createUserDto.getLastname(),createUserDto.getPassword(),
+                createUserDto.getEmail(), createUserDto.getLangCode(), createUserDto.getAuthority());
     }
 
     /**
@@ -28,15 +29,22 @@ public class UserUtil {
      * @return : true if input is valid
      */
     public static boolean checkUserInput(UserDto userDto){
-        if(userDto == null){
+        if(userDto == null || userDto.getId() == null || userDto.getId() < 0)
             return false;
-        }
-        if(userDto.getId() == null || userDto.getId() < 0){
-            return false;
-        }
-        return !StringUtils.isBlank(userDto.getFirstname()) && !StringUtils.isBlank(userDto.getLastname()) &&
-                !StringUtils.isBlank(userDto.getEmail()) && !StringUtils.isBlank(userDto.getUserCode()) &&
-                !StringUtils.isBlank(userDto.getAuthority());
+        return StringUtils.isNoneBlank(userDto.getFirstname(), userDto.getLastname(),
+                userDto.getEmail(), userDto.getUserCode(), userDto.getLangCode(), userDto.getAuthority());
+    }
+
+    /**
+     * Check if the CurrentUser is admin
+     *
+     * @param user : CurrentUser
+     *
+     * @return : true = is admin
+     */
+    public static boolean isAdmin(CurrentUser user){
+        return user.getAuthorities().stream()
+                .anyMatch(a -> StringUtils.compare("RIGHT_ADMIN", a.getAuthority()) == 0);
     }
 
 }

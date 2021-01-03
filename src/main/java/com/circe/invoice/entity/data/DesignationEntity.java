@@ -50,6 +50,9 @@ public class DesignationEntity implements Serializable, Auditable<String, Intege
     @Column(name = "dsg_total_taxes", scale = 2, nullable = false)
     private Float totalTaxes;
 
+    @Column(name = "dsg_product_type")
+    private String productType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dsg_ptr_ivc_id")
     private InvoiceEntity invoice;
