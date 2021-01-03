@@ -40,7 +40,7 @@ public class InvoiceController {
             throw new DesignationBadRequestException("Les designations contiennent des mauvaises informations");
         }
 
-        UserEntity userEntity = userService.loadClientById(user.getId());
+        UserEntity userEntity = userService.loadUserById(user.getId());
         invoiceService.createFacture(createDesignationDtoList, userEntity);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -56,7 +56,7 @@ public class InvoiceController {
     @ApiOperation(value = "Récupère toutes les factures d'un client")
     @GetMapping(value = "/api/auth/facture")
     public ResponseEntity<List<InvoiceDto>> getAllFactureForClient(CurrentUser user) throws UserNotFoundException {
-        UserEntity userEntity = userService.loadClientById(user.getId());
+        UserEntity userEntity = userService.loadUserById(user.getId());
         List<InvoiceDto> invoiceDtoList = invoiceService.getAllFactureForClient(userEntity);
 
         return new ResponseEntity<>(invoiceDtoList, HttpStatus.OK);

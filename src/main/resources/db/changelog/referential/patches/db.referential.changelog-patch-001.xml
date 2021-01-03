@@ -147,4 +147,12 @@
         </sql>
     </changeSet>
 
+    <changeSet id="p001_10_unique_email_code" author="kvu">
+        <addUniqueConstraint
+                columnNames="usr_email, usr_user_code"
+                constraintName="unique_email_code"
+                tableName="r_user"
+        />
+    </changeSet>
+
 </databaseChangeLog>

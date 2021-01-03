@@ -15,11 +15,11 @@ public class JwtUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
 
-    //@Value("${}")
-    private String jwtSecret = "toto";
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
-    //@Value("${}")
-    private Integer jwtExpirationMs = 840000000;
+    @Value("${jwt.expiration.ms}")
+    private Integer jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication){
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();

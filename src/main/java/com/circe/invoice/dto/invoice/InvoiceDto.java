@@ -1,6 +1,6 @@
 package com.circe.invoice.dto.invoice;
 
-import com.circe.invoice.dto.client.ClientDto;
+import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.dto.designation.DesignationDto;
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class InvoiceDto {
     private Float totalTaxes;
     private Float totalNoTaxes;
     private Float totalWithTaxes;
-    private ClientDto client;
+    private UserDto client;
     private List<DesignationDto> designations = new ArrayList<>();
 
 

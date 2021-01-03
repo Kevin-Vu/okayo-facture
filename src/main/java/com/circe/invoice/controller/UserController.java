@@ -1,19 +1,15 @@
 package com.circe.invoice.controller;
 
-import com.circe.invoice.dto.client.ClientDto;
-import com.circe.invoice.dto.client.CreateClientDto;
-import com.circe.invoice.dto.mapper.ClientMapper;
-import com.circe.invoice.entity.referential.UserEntity;
-import com.circe.invoice.exception.badrequest.ClientBadRequestException;
-import com.circe.invoice.exception.notfound.UserNotFoundException;
+import com.circe.invoice.dto.mapper.UserMapper;
 import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
-import com.circe.invoice.util.ClientUtil;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
@@ -22,7 +18,13 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private ClientMapper clientMapper;
+    private UserMapper userMapper;
+
+    @GetMapping(value = "/api/auth/client")
+    @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
+    public ResponseEntity<String> getClientByCodeClient(CurrentUser user)  {
+        return new ResponseEntity<>("defef", HttpStatus.OK);
+    }
 
 //    /**
 //     * Create a ClientEntity in database from a CreateClientDto

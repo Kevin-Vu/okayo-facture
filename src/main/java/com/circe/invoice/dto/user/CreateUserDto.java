@@ -1,4 +1,4 @@
-package com.circe.invoice.dto.client;
+package com.circe.invoice.dto.user;
 
 import lombok.*;
 
@@ -7,13 +7,14 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateClientDto {
+public class CreateUserDto {
 
     private String firstname;
     private String lastname;
+    private String userCode;
     private String email;
     private String password;
     private String authority;
-    private String company;
+    private String langCode;
 
 }

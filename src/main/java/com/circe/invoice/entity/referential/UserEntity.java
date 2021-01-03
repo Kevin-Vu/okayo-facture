@@ -38,13 +38,13 @@ public class UserEntity implements Serializable, Auditable<String, Integer, Loca
     @Column(name = "usr_user_code", updatable = false, unique = true, nullable = false)
     private String userCode;
 
-    @Column(name = "usr_email", nullable = false)
+    @Column(name = "usr_email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "usr_password", nullable = false)
     private String password;
 
-    @Column(name = "usr_lang_code")
+    @Column(name = "usr_lang_code",nullable = false)
     private String langCode;
 
     @ManyToOne
