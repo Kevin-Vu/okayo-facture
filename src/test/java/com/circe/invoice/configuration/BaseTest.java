@@ -14,17 +14,28 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BaseTest {
 
-    private static final String DB_NAME = "okayo";
-    private static final String DB_USER = "okayo";
-    private static final String DB_PASS = "okayo";
+    private static final String DB_NAME_DATA = "CIRCE_DATA";
+    private static final String DB_NAME_REFERENTIAL = "CIRCE_REFERENTIAL";
+    private static final String DB_USER = "circe";
+    private static final String DB_PASS = "circe";
 
     /**
      * Instantiate a new postgresql container for testing purposes
      */
     @ClassRule
-    public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer("postgres:11.1")
-            .withInitScript("db/init_testing.sql")
-            .withDatabaseName(DB_NAME)
+    public static PostgreSQLContainer postgreSQLContainerData = (PostgreSQLContainer) new PostgreSQLContainer("postgres:11.1")
+            .withInitScript("dump_circe_data.sql")
+            .withDatabaseName(DB_NAME_DATA)
+            .withUsername(DB_USER)
+            .withPassword(DB_PASS);
+
+    /**
+     * Instantiate a new postgresql container for testing purposes
+     */
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainerReferential = (PostgreSQLContainer) new PostgreSQLContainer("postgres:11.1")
+            .withInitScript("dump_circe_referential.sql")
+            .withDatabaseName(DB_NAME_REFERENTIAL)
             .withUsername(DB_USER)
             .withPassword(DB_PASS);
 
@@ -36,9 +47,13 @@ public class BaseTest {
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+                    "spring.datasource.data.jdbc-url=" + postgreSQLContainerData.getJdbcUrl(),
+                    "spring.datasource.data.username=" + postgreSQLContainerData.getUsername(),
+                    "spring.datasource.data.password=" + postgreSQLContainerData.getPassword(),
+
+                    "spring.datasource.referential.jdbc-url=" + postgreSQLContainerReferential.getJdbcUrl(),
+                    "spring.datasource.referential.username=" + postgreSQLContainerReferential.getUsername(),
+                    "spring.datasource.referential.password=" + postgreSQLContainerReferential.getPassword()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }

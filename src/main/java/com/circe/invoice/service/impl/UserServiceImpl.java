@@ -47,12 +47,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userCode){
-        UserEntity userEntity;
-        try{
-            userEntity = this.loadUserByCode(userCode);
-        }catch (UserNotFoundException e){
-            throw new UsernameNotFoundException(e.getMessage());
-        }
+        UserEntity userEntity = this.userRepository.findByUserCode(userCode);
+        if(userEntity == null)
+            throw new UsernameNotFoundException("User not found : user code : " + userCode);
 
         List<RightEntity> rights = userEntity.getAuthority()
                 .getRightEntities();
@@ -74,11 +71,11 @@ public class UserServiceImpl implements UserService {
      * @throws UserNotFoundException
      */
     @Override
-    public UserEntity loadUserByCode(String userCode) throws UserNotFoundException {
+    public UserDto loadUserByCode(String userCode) throws UserNotFoundException {
         UserEntity userEntity = userRepository.findByUserCode(userCode);
         if(userEntity == null)
             throw new UserNotFoundException("User doesn't exist : " + userCode);
-        return userEntity;
+        return userMapper.convert(userEntity);
     }
 
     /**
@@ -91,11 +88,11 @@ public class UserServiceImpl implements UserService {
      * @throws UserNotFoundException
      */
     @Override
-    public UserEntity loadUserById(Integer id) throws UserNotFoundException {
+    public UserDto loadUserById(Integer id) throws UserNotFoundException {
         UserEntity userEntity = userRepository.findById(id).orElse(null);
-        if(userEntity != null)
+        if(userEntity == null)
             throw new UserNotFoundException(String.format("User with id %d does not exist", id));
-        return userEntity;
+        return userMapper.convert(userEntity);
     }
 
     /**
@@ -124,7 +121,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto updateUser(UserDto userDto) throws UserNotFoundException {
-        UserEntity userEntity = this.loadUserById(userDto.getId());
+        UserEntity userEntity = this.userRepository.findById(userDto.getId()).orElse(null);
+        if(userEntity == null)
+            throw new UserNotFoundException("User not found : user code : " + userDto.getUserCode());
         userMapper.updateEntityFromDto(userDto, userEntity);
         userEntity = userRepository.save(userEntity);
         return userMapper.convert(userEntity);

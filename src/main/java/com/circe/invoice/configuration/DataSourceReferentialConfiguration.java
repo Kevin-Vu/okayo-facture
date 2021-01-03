@@ -1,6 +1,7 @@
 package com.circe.invoice.configuration;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -31,6 +32,9 @@ import javax.sql.DataSource;
         transactionManagerRef = "transactionManagerReferential"
 )
 public class DataSourceReferentialConfiguration {
+
+    @Autowired
+    private CirceConfiguration configuration;
 
     @Primary
     @Bean(name = "dataSourceReferential")
@@ -65,6 +69,7 @@ public class DataSourceReferentialConfiguration {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource());
         liquibase.setChangeLog("classpath:/db/changelog/referential/db.referential.changelog-master.xml");
+        liquibase.setShouldRun(configuration.isLiquibaseReferentialEnabled());
         return liquibase;
     }
 }

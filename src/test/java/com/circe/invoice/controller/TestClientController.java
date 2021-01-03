@@ -1,71 +1,75 @@
 package com.circe.invoice.controller;
 
 import com.circe.invoice.configuration.BaseTest;
-import com.circe.invoice.util.BCryptManagerUtil;
+import com.circe.invoice.dto.user.UserDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @RunWith(SpringRunner.class)
-//@TestPropertySource(locations = {"classpath:test.properties"})
+@TestPropertySource(locations = {"classpath:test.properties"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@AutoConfigureMockMvc
-public class TestClientController /*extends BaseTest*/ {
+@AutoConfigureMockMvc
+public class TestClientController extends BaseTest {
 
 
     @Autowired
-    private BCryptManagerUtil bCryptManagerUtil;
+    private MockMvc mockMvc;
 
-    @Test
-    public void de(){
-        String s = bCryptManagerUtil.getPasswordEncoder()
-                .encode("password");
-        System.out.println(s);
+    private JacksonTester<UserDto> jsonUserDto;
+
+    @Before
+    public void before() {
+
+        JacksonTester.initFields(this, new ObjectMapper());
+        MockitoAnnotations.initMocks(this);
     }
 
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private UserService userService;
-//
-//    private JacksonTester<CreateClientDto> jsonCreateClientDto;
-//    private JacksonTester<ClientDto> jsonClientDto;
-//
-//    @Before
-//    public void before() {
-//
-//        JacksonTester.initFields(this, new ObjectMapper());
-//        MockitoAnnotations.initMocks(this);
-//    }
-//
-//
-//    /**
-//     * Test create client
-//     * @throws Exception
-//     */
-//    @Test
-//    @WithUserDetails(value = "CU-AD-SG-585", userDetailsServiceBeanName = "userDetailsService")
-//    public void testCreateClient() throws Exception {
-//
-//        // Given
-//        UserEntity userEntity = userService.loadClientByCodeClient("CU-AD-SG-585");
-//        CreateClientDto createClientDto = ClientFactoryUtils.generateCreateClientDto()
-//                                                            .setCompany(userEntity.getCompanyEntity().getName());
-//        String url = "/api/auth/manager/client";
-//
-//        // When
-//        MockHttpServletResponse response = mockMvc.perform(
-//                post(url).accept(MediaType.ALL).content(jsonCreateClientDto.write(createClientDto).getJson())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        ).andReturn().getResponse();
-//
-//        // Then
-//        Assert.assertEquals(HttpStatus.OK.value(),response.getStatus());
-//
-//    }
+
+    /**
+     * Test get user
+     * @throws Exception
+     */
+    @Test
+    @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
+    public void testGetUser() throws Exception {
+
+        // Given
+        String url = "/api/auth/user";
+        HttpHeaders params = new HttpHeaders();
+        params.add("id", "1");
+
+        // When
+        MockHttpServletResponse response = mockMvc.perform(
+                get(url).params(params)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
+
+        // Then
+        Assert.assertEquals(HttpStatus.OK.value(),response.getStatus());
+        Assert.assertEquals("admin", userDto.getUserCode());
+
+    }
 //
 //    /**
 //     * Test create client with user authority

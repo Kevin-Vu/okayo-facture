@@ -1,6 +1,7 @@
 package com.circe.invoice.configuration;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -31,6 +32,9 @@ import javax.sql.DataSource;
 )
 public class DataSourceDataConfiguration {
 
+    @Autowired
+    private CirceConfiguration configuration;
+
     @Bean(name = "dataSourceData")
     @ConfigurationProperties(prefix = "spring.datasource.data")
     public DataSource dataSource() {
@@ -52,7 +56,7 @@ public class DataSourceDataConfiguration {
     }
 
     @ConfigurationProperties
-    public LiquibaseProperties primaryLiquibaseProperties(){
+    public LiquibaseProperties secondaryLiquibaseProperties(){
         return new LiquibaseProperties();
     }
 
@@ -61,6 +65,7 @@ public class DataSourceDataConfiguration {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource());
         liquibase.setChangeLog("classpath:/db/changelog/data/db.data.changelog-master.xml");
+        liquibase.setShouldRun(configuration.isLiquibaseDataEnabled());
         return liquibase;
     }
 }

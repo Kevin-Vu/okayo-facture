@@ -32,7 +32,7 @@ public class UserController {
      * @return : UserDto
      */
     @ApiOperation(value = "Create a new user")
-    @PostMapping(value = "/api/auth/client")
+    @PostMapping(value = "/api/auth/user")
     @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
     public ResponseEntity<UserDto> createUser(CurrentUser user, @RequestBody CreateUserDto createUserDto) throws UserBadRequestException {
         if(!UserUtil.checkCreateUserInput(createUserDto))
@@ -48,12 +48,12 @@ public class UserController {
      * @return : UserDto
      */
     @ApiOperation(value = "Get a user by its id")
-    @GetMapping(value = "/api/auth/client")
+    @GetMapping(value = "/api/auth/user")
     public ResponseEntity<UserDto> getUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException, UserNotFoundException {
         if(id == null || id < 0)
             throw new UserBadRequestException("Bad id");
         if(UserUtil.isAdmin(user) || user.getId().equals(id))
-            new ResponseEntity<>(userService.loadUserById(id), HttpStatus.OK);;
+            return new ResponseEntity<>(userService.loadUserById(id), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
@@ -65,7 +65,7 @@ public class UserController {
      * @return : HttpStatus
      */
     @ApiOperation(value = "Delete an user")
-    @DeleteMapping(value = "/api/auth/client")
+    @DeleteMapping(value = "/api/auth/user")
     @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
     public ResponseEntity<HttpStatus> deleteUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException {
         if(id == null || id < 0)
@@ -82,12 +82,12 @@ public class UserController {
      * @return : UserDto
      */
     @ApiOperation(value = "Update an user")
-    @PutMapping(value = "/api/auth/client")
+    @PutMapping(value = "/api/auth/user")
     public ResponseEntity<UserDto> updateUser(CurrentUser user, @RequestBody UserDto userDto) throws UserBadRequestException, UserNotFoundException {
         if(!UserUtil.checkUserInput(userDto))
             throw new UserBadRequestException("UserDto contains bad input");
         if(UserUtil.isAdmin(user) || user.getId().equals(userDto.getId()))
-            new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
+            return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
