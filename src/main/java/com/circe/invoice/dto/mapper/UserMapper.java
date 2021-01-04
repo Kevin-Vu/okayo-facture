@@ -7,7 +7,7 @@ import com.circe.invoice.entity.referential.UserEntity;
 import com.circe.invoice.repository.referential.AuthorityRepository;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface UserMapper {
 
     @Mapping(source = "authority.name", target = "authority")

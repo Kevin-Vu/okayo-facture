@@ -4,6 +4,7 @@ import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.security.CurrentUser;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class UserUtil {
 
@@ -20,19 +21,23 @@ public class UserUtil {
         if(createUserDto == null)
             return false;
         return StringUtils.isNoneBlank(createUserDto.getFirstname(), createUserDto.getLastname(),createUserDto.getPassword(),
-                createUserDto.getEmail(), createUserDto.getLangCode(), createUserDto.getAuthority());
+                createUserDto.getEmail(), createUserDto.getLangCode(), createUserDto.getAuthority()) &&
+                EmailValidator.getInstance().isValid(createUserDto.getEmail());
     }
 
     /**
      * Check the content of a UserDto
+     *
      * @param userDto : UserDto
+     *
      * @return : true if input is valid
      */
     public static boolean checkUserInput(UserDto userDto){
         if(userDto == null || userDto.getId() == null || userDto.getId() < 0)
             return false;
         return StringUtils.isNoneBlank(userDto.getFirstname(), userDto.getLastname(),
-                userDto.getEmail(), userDto.getUserCode(), userDto.getLangCode(), userDto.getAuthority());
+                userDto.getEmail(), userDto.getUserCode(), userDto.getLangCode(), userDto.getAuthority()) &&
+                EmailValidator.getInstance().isValid(userDto.getEmail());
     }
 
     /**

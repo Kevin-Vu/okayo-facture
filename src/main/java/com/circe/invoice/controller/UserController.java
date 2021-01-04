@@ -9,6 +9,7 @@ import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.UserUtil;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,19 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(CurrentUser user, @RequestBody CreateUserDto createUserDto) throws UserBadRequestException {
         if(!UserUtil.checkCreateUserInput(createUserDto))
             throw new UserBadRequestException("CreateUserDto contains bad input");
+        return new ResponseEntity<>(userService.createUser(createUserDto), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/api/user")
+    public ResponseEntity<UserDto> createddUser() throws UserBadRequestException {
+        CreateUserDto createUserDto = CreateUserDto.builder()
+                .userCode(RandomStringUtils.randomAlphabetic(10))
+                .password("password")
+                .authority("admin")
+                .email(RandomStringUtils.randomAlphabetic(10) + "kevin.vu@gotde.fr")
+                .firstname("ferf")
+                .lastname("eef")
+                .langCode("FR").build();
         return new ResponseEntity<>(userService.createUser(createUserDto), HttpStatus.OK);
     }
 

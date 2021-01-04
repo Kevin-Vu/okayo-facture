@@ -315,14 +315,14 @@ SELECT pg_catalog.setval('public.product_type_sequence', 1, false);
 -- Name: right_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.right_sequence', 1, true);
+SELECT pg_catalog.setval('public.right_sequence', 2, true);
 
 
 --
 -- Name: user_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_sequence', 1, false);
+SELECT pg_catalog.setval('public.user_sequence', 2, false);
 
 
 --

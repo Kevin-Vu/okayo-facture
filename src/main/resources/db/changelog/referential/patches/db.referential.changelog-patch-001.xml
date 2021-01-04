@@ -118,20 +118,22 @@
 
     <changeSet id="p001_07_insert_admin_auth" author="kvu">
         <insert tableName="r_authority">
+            <column name="ath_id" valueSequenceNext="authority_sequence"/>
             <column name="ath_name" value="admin"/>
             <column name="ath_created_by" value="kvu"/>
             <column name="ath_created_date" valueDate="CURRENT_TIMESTAMP"/>
-            <column name="ath_last_modified_by" value="admin"/>
+            <column name="ath_last_modified_by" value="kvu"/>
             <column name="ath_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
         </insert>
     </changeSet>
 
     <changeSet id="p001_08_insert_right_auth" author="kvu">
         <insert tableName="r_right">
+            <column name="rgt_id" valueSequenceNext="right_sequence"/>
             <column name="rgt_name" value="RIGHT_ADMIN"/>
             <column name="rgt_created_by" value="kvu"/>
             <column name="rgt_created_date" valueDate="CURRENT_TIMESTAMP"/>
-            <column name="rgt_last_modified_by" value="admin"/>
+            <column name="rgt_last_modified_by" value="kvu"/>
             <column name="rgt_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
         </insert>
     </changeSet>
@@ -143,7 +145,7 @@
                             jar_ptr_right_id)
             VALUES(
                 (SELECT ath_id FROM r_authority WHERE ath_name = 'admin'),
-                (SELECT rgt_id FROM r_right WHERE rgt_name = 'admin'))
+                (SELECT rgt_id FROM r_right WHERE rgt_name = 'RIGHT_ADMIN'))
         </sql>
     </changeSet>
 
@@ -153,6 +155,27 @@
                 constraintName="unique_email_code"
                 tableName="r_user"
         />
+    </changeSet>
+
+    <changeSet id="p001_11_add_admin_user" author="kvu">
+        <insert tableName="r_user">
+            <column name="usr_id" valueSequenceNext="user_sequence"/>
+            <column name="usr_firstname" value="admin"/>
+            <column name="usr_lastname" value="admin"/>
+            <column name="usr_user_code" value="admin"/>
+            <column name="usr_email" value="admin@circe.live"/>
+            <column name="usr_password" value="$2a$10$pQ6Jm4iByE/53ps8/QMgae4989C5yCbHshPLYdiqgmF301GLPmIx6"/>
+            <column name="usr_lang_code" value="FR"/>
+            <column name="usr_ptr_ath_id" valueComputed="(SELECT ath_id from r_authority WHERE ath_name = 'admin')"/>
+            <column name="usr_pwd_expiration_date" value="2100-01-01 00:00:00"/>
+            <column name="usr_pwd_access_start" value="2000-01-01 00:00:00"/>
+            <column name="usr_pwd_access_end" value="2100-01-01 00:00:00"/>
+            <column name="usr_pwd_last_change_date" value="2000-01-01 00:00:00"/>
+            <column name="usr_created_by" value="kvu"/>
+            <column name="usr_created_date" value="now()"/>
+            <column name="usr_last_modified_by" value="kvu"/>
+            <column name="usr_last_modified_date" value="now()"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
