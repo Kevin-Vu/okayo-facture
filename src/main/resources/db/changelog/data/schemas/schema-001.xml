@@ -2,11 +2,11 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="p001_01_add_company_sequence" author="kvu">
+    <changeSet id="s001_01_add_company_sequence" author="kvu">
         <createSequence sequenceName="company_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
     </changeSet>
 
-    <changeSet id="p001_01_creation_company" author="kvu">
+    <changeSet id="s001_01_creation_company" author="kvu">
         <createTable tableName="d_company" >
             <column name="com_id" type="INT" defaultValueComputed="nextval('company_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -22,11 +22,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_02_add_customer_sequence" author="kvu">
+    <changeSet id="s001_02_add_customer_sequence" author="kvu">
         <createSequence sequenceName="customer_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
     </changeSet>
 
-    <changeSet id="p001_02_creation_customer" author="kvu">
+    <changeSet id="s001_02_creation_customer" author="kvu">
         <createTable tableName="d_customer">
             <column name="cus_id" type="INT" defaultValueComputed="nextval('customer_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -48,11 +48,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_03_add_invoice_sequence" author="kvu">
+    <changeSet id="s001_03_add_invoice_sequence" author="kvu">
         <createSequence sequenceName="invoice_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
     </changeSet>
 
-    <changeSet id="p001_03_creation_invoice" author="kvu">
+    <changeSet id="s001_03_creation_invoice" author="kvu">
         <createTable tableName="d_invoice">
             <column name="ivc_id" type="INT" defaultValueComputed="nextval('invoice_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -72,11 +72,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_04_add_designation_sequence" author="kvu">
+    <changeSet id="s001_04_add_designation_sequence" author="kvu">
         <createSequence sequenceName="designation_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
     </changeSet>
 
-    <changeSet id="p001_04_creation_designation" author="kvu">
+    <changeSet id="s001_04_creation_designation" author="kvu">
         <createTable tableName="d_designation">
             <column name="dsg_id" type="INT" defaultValueComputed="nextval('designation_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -98,7 +98,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_05_add_pdt_type_design" author="kvu">
+    <changeSet id="s001_05_add_pdt_type_design" author="kvu">
         <addColumn tableName="d_designation">
             <column name="dsg_product_type" afterColumn="dsg_total_taxes" type="VARCHAR(60)"/>
         </addColumn>

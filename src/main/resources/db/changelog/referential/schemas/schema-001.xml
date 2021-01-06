@@ -2,11 +2,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="p001_01_add_authority_sequence" author="kvu">
-        <createSequence sequenceName="authority_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="p001_01_creation_authority" author="kvu">
+    <changeSet id="s001_01_creation_authority" author="kvu">
         <createTable tableName="r_authority" >
             <column name="ath_id" type="INT" defaultValueComputed="nextval('authority_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -19,11 +15,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_02_add_right_sequence" author="kvu">
-        <createSequence sequenceName="right_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="p001_02_creation_right" author="kvu">
+    <changeSet id="s001_02_creation_right" author="kvu">
         <createTable tableName="r_right" >
             <column name="rgt_id" type="INT" defaultValueComputed="nextval('right_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -36,7 +28,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_03_creation_join_auth_right" author="kvu">
+    <changeSet id="s001_03_creation_join_auth_right" author="kvu">
         <createTable tableName="r_join_authority_right">
             <column name="jar_ptr_auth_id" type="INT">
                 <constraints nullable="false" foreignKeyName="fk_ath_id" references="r_authority(ath_id)"/>
@@ -47,11 +39,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_04_add_user_sequence" author="kvu">
-        <createSequence sequenceName="user_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="p001_04_creation_user" author="kvu">
+    <changeSet id="s001_04_creation_user" author="kvu">
         <createTable tableName="r_user">
             <column name="usr_id" type="INT" defaultValueComputed="nextval('user_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -76,11 +64,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_05_add_product_type_sequence" author="kvu">
-        <createSequence sequenceName="product_type_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="p001_05_creation_product_type" author="kvu">
+    <changeSet id="s001_05_creation_product_type" author="kvu">
         <createTable tableName="r_product_type" >
             <column name="pdt_id" type="INT" defaultValueComputed="nextval('product_type_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -95,11 +79,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_05_add_designation_catalog_sequence" author="kvu">
-        <createSequence sequenceName="designation_catalog_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="p001_06_creation_designation_catalog" author="kvu">
+    <changeSet id="s001_06_creation_designation_catalog" author="kvu">
         <createTable tableName="r_designation_catalog">
             <column name="dec_id" type="INT" defaultValueComputed="nextval('designation_catalog_sequence')">
                 <constraints primaryKey="true" nullable="false"/>
@@ -116,66 +96,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="p001_07_insert_admin_auth" author="kvu">
-        <insert tableName="r_authority">
-            <column name="ath_id" valueSequenceNext="authority_sequence"/>
-            <column name="ath_name" value="admin"/>
-            <column name="ath_created_by" value="kvu"/>
-            <column name="ath_created_date" valueDate="CURRENT_TIMESTAMP"/>
-            <column name="ath_last_modified_by" value="kvu"/>
-            <column name="ath_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="p001_08_insert_right_auth" author="kvu">
-        <insert tableName="r_right">
-            <column name="rgt_id" valueSequenceNext="right_sequence"/>
-            <column name="rgt_name" value="RIGHT_ADMIN"/>
-            <column name="rgt_created_by" value="kvu"/>
-            <column name="rgt_created_date" valueDate="CURRENT_TIMESTAMP"/>
-            <column name="rgt_last_modified_by" value="kvu"/>
-            <column name="rgt_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="p001_09_join_right_auth_admin" author="kvu">
-        <sql>
-            INSERT INTO r_join_authority_right(
-                            jar_ptr_auth_id,
-                            jar_ptr_right_id)
-            VALUES(
-                (SELECT ath_id FROM r_authority WHERE ath_name = 'admin'),
-                (SELECT rgt_id FROM r_right WHERE rgt_name = 'RIGHT_ADMIN'))
-        </sql>
-    </changeSet>
-
-    <changeSet id="p001_10_unique_email_code" author="kvu">
+    <changeSet id="s001_10_unique_email_code" author="kvu">
         <addUniqueConstraint
                 columnNames="usr_email, usr_user_code"
                 constraintName="unique_email_code"
-                tableName="r_user"
-        />
-    </changeSet>
-
-    <changeSet id="p001_11_add_admin_user" author="kvu">
-        <insert tableName="r_user">
-            <column name="usr_id" valueSequenceNext="user_sequence"/>
-            <column name="usr_firstname" value="admin"/>
-            <column name="usr_lastname" value="admin"/>
-            <column name="usr_user_code" value="admin"/>
-            <column name="usr_email" value="admin@circe.live"/>
-            <column name="usr_password" value="$2a$10$pQ6Jm4iByE/53ps8/QMgae4989C5yCbHshPLYdiqgmF301GLPmIx6"/>
-            <column name="usr_lang_code" value="FR"/>
-            <column name="usr_ptr_ath_id" valueComputed="(SELECT ath_id from r_authority WHERE ath_name = 'admin')"/>
-            <column name="usr_pwd_expiration_date" value="2100-01-01 00:00:00"/>
-            <column name="usr_pwd_access_start" value="2000-01-01 00:00:00"/>
-            <column name="usr_pwd_access_end" value="2100-01-01 00:00:00"/>
-            <column name="usr_pwd_last_change_date" value="2000-01-01 00:00:00"/>
-            <column name="usr_created_by" value="kvu"/>
-            <column name="usr_created_date" value="now()"/>
-            <column name="usr_last_modified_by" value="kvu"/>
-            <column name="usr_last_modified_date" value="now()"/>
-        </insert>
+                tableName="r_user"/>
     </changeSet>
 
 </databaseChangeLog>
