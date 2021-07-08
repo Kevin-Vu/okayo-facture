@@ -1,5 +1,5 @@
 [comment]: <> "[![CircleCI](https://circleci.com/gh/Kevin-Vu/okayo-facture.svg?style=svg)](https://circleci.com/gh/Kevin-Vu/okayo-facture)"  
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb8ce8a48b3c42b0b120d7e93c775699)](https://www.codacy.com/manual/Kevin-Vu/okayo-facture?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kevin-Vu/okayo-facture&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/652838ec809046299d53bb617ca74753)](https://www.codacy.com/gh/Kevin-Vu/circe-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kevin-Vu/circe-spring-boot&amp;utm_campaign=Badge_Grade)
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
 # Circe-Spring-Boot
 
